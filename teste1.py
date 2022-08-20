@@ -182,7 +182,7 @@ for e in range(32):
 sr = ['0'] * 32
 
 
-for d in range(162):
+for d in range(180):
     
     c = proxIns
 
@@ -192,7 +192,7 @@ for d in range(162):
       #-------------------------------------------------------------------------------------------------------------------------------------------------------------
         pc=tX(completaZeroHexa(hex(proxPC)).upper())
 
-        print("{}:  ".format(pc.upper()),end='')
+        print("{}:  ".format((pc.upper())),end='')
         
         zn,zd,sn,ov,iv,cy = '0','0','0','0','0','0'
         if c[2:4] == "00": #U
@@ -254,7 +254,7 @@ for d in range(162):
                     listaRegisDEC[rZ] = listaRegisDEC[rZ]
 
                 
-                imprimir = f"   {instrucao} {registradorZ},{variavelDEC}         	{registradorZ.upper()}={variavelHEXA.upper()}"
+                imprimir = f"   {instrucao} {registradorZ},{variavelDEC}         	{registradorZ.upper()}={variavelHEXA}"
                 arqOutput.write(pc+":"+imprimir+"\n")
                 print(f"{instrucao} {registradorZ},{variavelDEC}         	{registradorZ.upper()}={variavelHEXA}")
       #-------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -318,13 +318,13 @@ for d in range(162):
                     listaRegisDEC[rZ] = listaRegisDEC[rZ]
 
                 
-                srHEXA = completaZeroHexa(hex(int("0b"+"".join(sr),2)))
+                srHEXA = tX(completaZeroHexa(hex(int("0b"+"".join(sr),2))).upper())
                 listaRegistradores[31] = srHEXA
                 
                 
-                imprimir = f"   {instrucao} {registradorZ},{registradorX},{registradorY}           	{registradorZ.upper()}={registradorX.upper()}+{registradorY.upper()}={listaRegistradores[rZ].upper()}, SR={srHEXA.upper()}"
+                imprimir = f"   {instrucao} {registradorZ},{registradorX},{registradorY}           	{registradorZ.upper()}={registradorX.upper()}+{registradorY.upper()}={tX(listaRegistradores[rZ].upper())},SR={srHEXA}"
                 arqOutput.write(pc+":"+imprimir+"\n")
-                print(f"{instrucao} {registradorZ},{registradorX},{registradorY}           	{registradorZ.upper()}={registradorX.upper()}+{registradorY.upper()}={listaRegistradores[rZ].upper()}, SR={srHEXA.upper()}")
+                print(f"{instrucao} {registradorZ},{registradorX},{registradorY}           	{registradorZ.upper()}={registradorX.upper()}+{registradorY.upper()}={tX(listaRegistradores[rZ].upper())},SR={srHEXA}")
       #-------------------------------------------------------------------------------------------------------------------------------------------------------------
       #-------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -389,13 +389,11 @@ for d in range(162):
                     listaRegisDEC[rZ] = listaRegisDEC[rZ]
 
                 
-                srHEXA = completaZeroHexa(hex(int("0b"+"".join(sr),2)))
+                srHEXA = tX(completaZeroHexa(hex(int("0b"+"".join(sr),2))).upper())
                 listaRegistradores[31] = srHEXA
-
-                
-                imprimir = f"   {instrucao} {registradorZ},{registradorX},{registradorY}           	{registradorZ.upper()}={registradorX.upper()}-{registradorY.upper()}={variavelHEXA.upper()},SR={srHEXA.upper()}"
+                imprimir = f"   {instrucao} {registradorZ},{registradorX},{registradorY}           	{registradorZ.upper()}={registradorX.upper()}-{registradorY.upper()}={tX(variavelHEXA.upper())},SR={srHEXA}"
                 arqOutput.write(pc+":"+imprimir+"\n")
-                print(f"{instrucao} {registradorZ},{registradorX},{registradorY}           	{registradorZ.upper()}={registradorX.upper()}-{registradorY.upper()}={variavelHEXA.upper()},SR={srHEXA.upper()}")
+                print(f"{instrucao} {registradorZ},{registradorX},{registradorY}           	{registradorZ.upper()}={registradorX.upper()}-{registradorY.upper()}={tX(variavelHEXA.upper())},SR={srHEXA}")
       #-------------------------------------------------------------------------------------------------------------------------------------------------------------
       #-------------------------------------------------------------------------------------------------------------------------------------------------------------
             
@@ -456,7 +454,7 @@ for d in range(162):
                     listaRegisDEC[rZ] = listaRegisDEC[rZ]
 
                 
-                srHEXA = completaZeroHexa(hex(int("0b"+"".join(sr),2)))
+                srHEXA = tX(completaZeroHexa(hex(int("0b"+"".join(sr),2))).upper())
                 listaRegistradores[31] = srHEXA
 
 
@@ -518,12 +516,12 @@ for d in range(162):
                     else:
                         sr[25] = "0"
                     
-                    srHEXA = completaZeroHexa(hex(int("0b"+"".join(sr),2)))
+                    srHEXA = tX(completaZeroHexa(hex(int("0b"+"".join(sr),2))).upper())
 
                     listaRegistradores[31] = srHEXA
-    
-                    imprimir = f"{instrucao} {rl4},{registradorZ},{registradorX},{registradorY}         	{rl4.upper()}:{registradorZ.upper()}={registradorX.upper()}*{registradorY.upper()}={completaZeroHexa64(listaRegistradores[rZ].upper())}, SR={srHEXA.upper()}"
-                    print(f"{instrucao} {rl4},{registradorZ},{registradorX},{registradorY}         	{rl4.upper()}:{registradorZ.upper()}={registradorX.upper()}*{registradorY.upper()}={variavelHexa}, SR={srHEXA.upper()}")
+                    imprimir = f"{instrucao} {rl4},{registradorZ},{registradorX},{registradorY}         	{rl4.upper()}:{registradorZ.upper()}={registradorX.upper()}*{registradorY.upper()}={tX(variavelHexa.upper())}, SR={srHEXA}"
+                    arqOutput.write(pc+":"+imprimir+"\n")
+                    print(f"{instrucao} {rl4},{registradorZ},{registradorX},{registradorY}         	{rl4.upper()}:{registradorZ.upper()}={registradorX.upper()}*{registradorY.upper()}={tX(variavelHexa.upper())}, SR={srHEXA}")
       #-------------------------------------------------------------------------------------------------------------------------------------------------------------
       #-------------------------------------------------------------------------------------------------------------------------------------------------------------
                 
@@ -591,12 +589,12 @@ for d in range(162):
                     else:
                         sr[25] = "0"
                     
-                    srHEXA = completaZeroHexa(hex(int("0b"+"".join(sr),2)))
+                    srHEXA = tX(completaZeroHexa(hex(int("0b"+"".join(sr),2))).upper())
 
                     listaRegistradores[31] = srHEXA
-    
-                    imprimir = f"{instrucao} {rl4},{registradorZ},{registradorX},{registradorY}         	{rl4.upper()}:{registradorZ.upper()}={registradorX.upper()}*{registradorY.upper()}={completaZeroHexa64(listaRegistradores[rZ].upper())}, SR={srHEXA.upper()}"
-                    print(f"{instrucao} {rl4},{registradorZ},{registradorX},{registradorY}         	{rl4.upper()}:{registradorZ.upper()}={registradorX.upper()}*{registradorY.upper()}={variavelHexa.upper()}, SR={srHEXA.upper()}")
+                    imprimir = f"   {instrucao} {rl4},{registradorZ},{registradorX},{registradorY}         	{rl4.upper()}:{registradorZ.upper()}={registradorX.upper()}*{registradorY.upper()}={tX(variavelHexa.upper())}, SR={srHEXA}"
+                    arqOutput.write(pc+":"+imprimir+"\n")
+                    print(f"{instrucao} {rl4},{registradorZ},{registradorX},{registradorY}         	{rl4.upper()}:{registradorZ.upper()}={registradorX.upper()}*{registradorY.upper()}={tX(variavelHexa.upper())}, SR={srHEXA}")
       #-------------------------------------------------------------------------------------------------------------------------------------------------------------
       #-------------------------------------------------------------------------------------------------------------------------------------------------------------                
                 elif imed[:3] == "100":
@@ -665,12 +663,12 @@ for d in range(162):
                     else:
                         sr[31] = "0"
                     
-                    srHEXA = completaZeroHexa(hex(int("0b"+"".join(sr),2)))
+                    srHEXA = tX(completaZeroHexa(hex(int("0b"+"".join(sr),2))).upper())
                     listaRegistradores[31] = srHEXA
 
-                    imprimir = f"   {instrucao} {rl4},{registradorZ},{registradorX},{registradorY}           	{rl4.upper()}={registradorX.upper()}%{registradorY.upper()}={tX(dvr.upper())},{registradorZ.upper()}={registradorX.upper()}/{registradorY.upper()}={tX(dvn.upper())}, SR={srHEXA.upper()}"
+                    imprimir = f"   {instrucao} {rl4},{registradorZ},{registradorX},{registradorY}           	{rl4.upper()}={registradorX.upper()}%{registradorY.upper()}={tX(dvr.upper())},{tX(registradorZ.upper())}={tX(registradorX.upper())}/{tX(registradorY.upper())}={tX(dvn.upper())},SR={srHEXA}"
                     arqOutput.write(pc+":"+imprimir+"\n")
-                    print(f"{instrucao} {rl4},{registradorZ},{registradorX},{registradorY}           	{rl4.upper()}={registradorX.upper()}%{registradorY.upper()}={tX(dvr.upper())},{registradorZ.upper()}={registradorX.upper()}/{registradorY.upper()}={tX(dvn.upper())}, SR={srHEXA.upper()}")
+                    print(f"{instrucao} {rl4},{registradorZ},{registradorX},{registradorY}           	{rl4.upper()}={registradorX.upper()}%{registradorY.upper()}={tX(dvr.upper())},{tX(registradorZ.upper())}={tX(registradorX.upper())}/{tX(registradorY.upper())}={tX(dvn.upper())},SR={srHEXA}")
       #-------------------------------------------------------------------------------------------------------------------------------------------------------------
       #-------------------------------------------------------------------------------------------------------------------------------------------------------------
                 elif imed[:3] == "110":
@@ -744,12 +742,11 @@ for d in range(162):
                         sr[31] = "0"
                     
 
-                    srHEXA = completaZeroHexa(hex(int("0b"+"".join(sr),2)))
+                    srHEXA = tX(completaZeroHexa(hex(int("0b"+"".join(sr),2))).upper())
                     listaRegistradores[31] = srHEXA
-
-                    imprimir = f"   {instrucao} {rl4},{registradorZ},{registradorX},{registradorY}           	{rl4.upper()}={registradorX.upper()}%{registradorY.upper()}={variavelHEXA2.upper()},{registradorZ.upper()}={registradorX.upper()}/{registradorY.upper()}={variavelHEXA.upper()}, SR={srHEXA.upper()}"
+                    imprimir = f"   {instrucao} {rl4},{registradorZ},{registradorX},{registradorY}           	{rl4.upper()}={registradorX.upper()}%{tX(registradorY.upper())}={tX(dvr.upper())},{tX(registradorZ.upper())}={tX(registradorX.upper())}/{tX(registradorY.upper())}={tX(dvn.upper())},SR={srHEXA}"
                     arqOutput.write(pc+":"+imprimir+"\n")
-                    print(f"{instrucao} {rl4},{registradorZ},{registradorX},{registradorY}           	{rl4.upper()}={registradorX.upper()}%{registradorY.upper()}={tX(dvr.upper())},{registradorZ.upper()}={registradorX.upper()}/{registradorY.upper()}={tX(dvn.upper())}, SR={srHEXA.upper()}")
+                    print(f"{instrucao} {rl4},{registradorZ},{registradorX},{registradorY}           	{rl4.upper()}={registradorX.upper()}%{tX(registradorY.upper())}={tX(dvr.upper())},{tX(registradorZ.upper())}={tX(registradorX.upper())}/{tX(registradorY.upper())}={tX(dvn.upper())},SR={srHEXA}")
 
 
 
@@ -808,12 +805,12 @@ for d in range(162):
                         listaRegistradores[rZ] = completaZeroHexa(hex(0))
                     else:
                         listaRegistradores[rZ] = listaRegistradores[rZ]
-                    srHEXA = completaZeroHexa(hex(int("0b"+"".join(sr),2)))
+                    srHEXA = tX(completaZeroHexa(hex(int("0b"+"".join(sr),2))).upper())
                     listaRegistradores[31] = srHEXA
                     
-                    imprimir = f"   {instrucao} {registradorZ},{registradorX},{registradorY},{L4}          	{registradorZ.upper()}:{registradorX.upper()}={registradorZ.upper()}:{registradorX.upper()}<<{L4+1}={deslocamento.upper()},SR={srHEXA.upper()}"
+                    imprimir = f"   {instrucao} {registradorZ},{registradorX},{registradorY},{L4}          	{registradorZ.upper()}:{registradorX.upper()}={registradorZ.upper()}:{registradorX.upper()}<<{L4+1}={tX(deslocamento.upper())},SR={srHEXA}"
                     arqOutput.write(pc+":"+imprimir+"\n")
-                    print(f"{instrucao} {registradorZ},{registradorX},{registradorY},{L4}          	{registradorZ.upper()}:{registradorX.upper()}={registradorZ.upper()}:{registradorX.upper()}<<{L4+1}={deslocamento.upper()},SR={srHEXA.upper()}")
+                    print(f"{instrucao} {registradorZ},{registradorX},{registradorY},{L4}          	{registradorZ.upper()}:{registradorX.upper()}={registradorZ.upper()}:{registradorX.upper()}<<{L4+1}={tX(deslocamento.upper())},SR={srHEXA}")
                 
                 
                 elif imed[:3] == "011":
@@ -872,12 +869,12 @@ for d in range(162):
                         listaRegistradores[rZ] = completaZeroHexa(hex(0))
                     else:
                         listaRegistradores[rZ] = listaRegistradores[rZ]
-                    srHEXA = completaZeroHexa(hex(int("0b"+"".join(sr),2)))
+                    srHEXA = tX(completaZeroHexa(hex(int("0b"+"".join(sr),2))).upper())
                     listaRegistradores[31] = srHEXA
                     
-                    imprimir = f"   {instrucao} {registradorZ},{registradorX},{registradorY},{L4}          	{registradorZ.upper()}:{registradorX.upper()}={registradorZ.upper()}:{registradorX.upper()}<<{L4+1}={deslocamento.upper()},SR={srHEXA.upper()}"
+                    imprimir = f"   {instrucao} {registradorZ},{registradorX},{registradorY},{L4}          	{registradorZ.upper()}:{registradorX.upper()}={registradorZ.upper()}:{registradorX.upper()}<<{L4+1}={tX(deslocamento.upper())},SR={srHEXA}"
                     arqOutput.write(pc+":"+imprimir+"\n")
-                    print(f"{instrucao} {registradorZ},{registradorX},{registradorY},{L4}          	{registradorZ.upper()}:{registradorX.upper()}={registradorZ.upper()}:{registradorX.upper()}<<{L4+1}={deslocamento.upper()},SR={srHEXA.upper()}")
+                    print(f"{instrucao} {registradorZ},{registradorX},{registradorY},{L4}          	{registradorZ.upper()}:{registradorX.upper()}={registradorZ.upper()}:{registradorX.upper()}<<{L4+1}={tX(deslocamento.upper())},SR={srHEXA}")
                     
 
                 elif imed[:3] == "101":
@@ -940,7 +937,7 @@ for d in range(162):
                         listaRegistradores[rZ] = completaZeroHexa(hex(0))
                     else:
                         listaRegistradores[rZ] = listaRegistradores[rZ]
-                    srHEXA = completaZeroHexa(hex(int("0b"+"".join(sr),2)))
+                    srHEXA = tX(completaZeroHexa(hex(int("0b"+"".join(sr),2))).upper())
                     listaRegistradores[31] = srHEXA
                     
                     imprimir = f"   {instrucao} {registradorZ},{registradorX},{registradorY},{L4}          	{registradorZ.upper()}:{registradorX.upper()}={registradorZ.upper()}:{registradorX.upper()}>>{L4+1}={deslocamento.upper()},SR={srHEXA.upper()}"
@@ -1012,12 +1009,12 @@ for d in range(162):
                         listaRegistradores[rZ] = completaZeroHexa(hex(0))
                     else:
                         listaRegistradores[rZ] = listaRegistradores[rZ]
-                    srHEXA = completaZeroHexa(hex(int("0b"+"".join(sr),2)))
+                    srHEXA = tX(completaZeroHexa(hex(int("0b"+"".join(sr),2))).upper())
                     listaRegistradores[31] = srHEXA
                     
-                    imprimir = f"   {instrucao} {registradorZ},{registradorX},{registradorY},{L4}          	{registradorZ.upper()}:{registradorX.upper()}={registradorZ.upper()}:{registradorX.upper()}>>{L4+1}={deslocamento.upper()},SR={srHEXA.upper()}"
+                    imprimir = f"   {instrucao} {registradorZ},{registradorX},{registradorY},{L4}          	{registradorZ.upper()}:{registradorX.upper()}={registradorZ.upper()}:{registradorX.upper()}>>{L4+1}={tX(deslocamento.upper())},SR={srHEXA}"
                     arqOutput.write(pc+":"+imprimir+"\n")
-                    print(f"{instrucao} {registradorZ},{registradorX},{registradorY},{L4}          	{registradorZ.upper()}:{registradorX.upper()}={registradorZ.upper()}:{registradorX.upper()}>>{L4+1}={deslocamento.upper()},SR={srHEXA.upper()}")
+                    print(f"{instrucao} {registradorZ},{registradorX},{registradorY},{L4}          	{registradorZ.upper()}:{registradorX.upper()}={registradorZ.upper()}:{registradorX.upper()}>>{L4+1}={tX(deslocamento.upper())},SR={srHEXA}")
                 
       #-------------------------------------------------------------------------------------------------------------------------------------------------------------
       #-------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1111,19 +1108,21 @@ for d in range(162):
                 listaRegistradores[29] = pc
                 listaRegisDEC[29] = int(pc,16)
                 instrucao = "not"
-                registradorZ = int(opZ,2)
-                registradorX = int(opX,2)           
-                num1 = listaRegisDEC[registradorX]
+                rZ = int(opZ,2)
+                rX = int(opX,2)    
+                registradorZ = regisEsp[rZ]
+                registradorX = regisEsp[rX] 
+                num1 = listaRegisDEC[rX]
                 noT = (~num1)
                 if noT<0:
                     noTBin = (complementa2(completaZero(bin(noT).strip("-")[2:]))) ## parei aqui
                 else:
                     noTBin =  ((completaZero(bin(noT).strip("-")[2:])))
 
-                listaRegistradores[registradorZ] = completaZeroHexa(hex(int(noTBin,2)))
-                listaRegisDEC[registradorZ] = noT
+                listaRegistradores[rZ] = completaZeroHexa(hex(int(noTBin,2)))
+                listaRegisDEC[rZ] = noT
 
-                if listaRegistradores[registradorZ] == "0x00000000":
+                if listaRegistradores[rZ] == "0x00000000":
                     zn = "1"
                     sr[25] = zn
                 else:
@@ -1135,17 +1134,17 @@ for d in range(162):
                     sr[27] = "0"
                 
                 if registradorZ == 0:
-                    listaRegistradores[registradorZ] = completaZeroHexa(hex(0))
+                    listaRegistradores[rZ] = completaZeroHexa(hex(0))
                 else:
-                    listaRegistradores[registradorZ] = listaRegistradores[registradorZ]
-                srHEXA = completaZeroHexa(hex(int("0b"+"".join(sr),2)))
+                    listaRegistradores[rZ] = listaRegistradores[rZ]
+                srHEXA = tX(completaZeroHexa(hex(int("0b"+"".join(sr),2))).upper())
                 listaRegistradores[31] = srHEXA
             
                 
                 
-                imprimir = f"   {instrucao} r{registradorZ},r{registradorX}               	R{registradorZ}=~R{registradorX}={listaRegistradores[registradorZ].upper()},SR={srHEXA.upper()}"
+                imprimir =f"    {instrucao} {registradorZ},{registradorX}               	{registradorZ.upper()}=~{registradorX.upper()}={tX(listaRegistradores[rZ].upper())},SR={srHEXA}"
                 arqOutput.write(pc+":"+imprimir+"\n")
-                print(f"{instrucao} r{registradorZ},r{registradorX}               	R{registradorZ}=~R{registradorX}={listaRegistradores[registradorZ].upper()},SR={srHEXA.upper()}")
+                print(f"{instrucao} {registradorZ},{registradorX}               	{registradorZ.upper()}=~{registradorX.upper()}={tX(listaRegistradores[rZ].upper())},SR={srHEXA}")
             
             
             elif operacao == "001001":
@@ -1350,9 +1349,9 @@ for d in range(162):
                 else:
                     pulo = completaZeroHexa(hex(proxPC+4))
                 
-                imprimir = f"   {instrucao} {variavel}                    	PC={completaZeroHexa(hex(int(pulo,16))).upper()}"
+                imprimir = f"   {instrucao} {variavel}                    	PC={tX(completaZeroHexa(hex(int(pulo,16))).upper())}"
                 arqOutput.write(pc+":"+imprimir+"\n")
-                print(f"{instrucao} {variavel}                    	PC={completaZeroHexa(hex(int(pulo,16))).upper()}")
+                print(f"{instrucao} {variavel}                    	PC={tX(completaZeroHexa(hex(int(pulo,16))).upper())}")
             
             
             elif operacao == "101100":
@@ -1366,9 +1365,9 @@ for d in range(162):
                 else:
                     pulo = completaZeroHexa(hex(proxPC+4))
                  
-                imprimir = f"   {instrucao} {variavel}                    	PC={completaZeroHexa(hex(int(pulo,16))).upper()}"
+                imprimir = f"   {instrucao} {variavel}                    	PC={tX(completaZeroHexa(hex(int(pulo,16))).upper())}"
                 arqOutput.write(pc+":"+imprimir+"\n")
-                print(f"{instrucao} {variavel}                    	PC={completaZeroHexa(hex(int(pulo,16))).upper()}")
+                print(f"{instrucao} {variavel}                    	PC={tX(completaZeroHexa(hex(int(pulo,16))).upper())}")
 
             elif operacao == "101101":
                 listaRegistradores[28] = completaZeroHexa(hex(int(c,2)))
@@ -1381,9 +1380,9 @@ for d in range(162):
                 else:
                     pulo = completaZeroHexa(hex(proxPC+4))
              
-                imprimir = f"   {instrucao} {variavel}                    	PC={completaZeroHexa(hex(int(pulo,16))).upper()}"
+                imprimir = f"   {instrucao} {variavel}                    	PC={tX(completaZeroHexa(hex(int(pulo,16))).upper())}"
                 arqOutput.write(pc+":"+imprimir+"\n")
-                print(f"{instrucao} {variavel}                    	PC={completaZeroHexa(hex(int(pulo,16))).upper()}")
+                print(f"{instrucao} {variavel}                    	PC={tX(completaZeroHexa(hex(int(pulo,16))).upper())}")
             
             elif operacao == "101110":
                 listaRegistradores[28] = completaZeroHexa(hex(int(c,2)))
@@ -1396,9 +1395,9 @@ for d in range(162):
                 else:
                     pulo = completaZeroHexa(hex(proxPC+4))
                  
-                imprimir = f"   {instrucao} {variavel}                    	PC={completaZeroHexa(hex(int(pulo,16))).upper()}"
+                imprimir = f"   {instrucao} {variavel}                    	PC={tX(completaZeroHexa(hex(int(pulo,16))).upper())}"
                 arqOutput.write(pc+":"+imprimir+"\n")
-                print(f"{instrucao} {variavel}                    	PC={completaZeroHexa(hex(int(pulo,16))).upper()}")
+                print(f"{instrucao} {variavel}                    	PC={tX(completaZeroHexa(hex(int(pulo,16))).upper())}")
             
             elif operacao == "101111":
                 listaRegistradores[28] = completaZeroHexa(hex(int(c,2)))
@@ -1411,9 +1410,9 @@ for d in range(162):
                 else:
                     pulo = completaZeroHexa(hex(proxPC+4))
                 
-                imprimir = f"   {instrucao} {variavel}                    	PC={completaZeroHexa(hex(int(pulo,16))).upper()}"
+                imprimir = f"   {instrucao} {variavel}                    	PC={tX(completaZeroHexa(hex(int(pulo,16))).upper())}"
                 arqOutput.write(pc+":"+imprimir+"\n")
-                print(f"{instrucao} {variavel}                    	PC={completaZeroHexa(hex(int(pulo,16))).upper()}")
+                print(f"{instrucao} {variavel}                    	PC={tX(completaZeroHexa(hex(int(pulo,16))).upper())}")
             
 
             elif operacao == "110000":
@@ -1427,9 +1426,9 @@ for d in range(162):
                 else:
                     pulo = completaZeroHexa(hex(proxPC+4))
                  
-                imprimir = f"   {instrucao} {variavel}                    	PC={completaZeroHexa(hex(int(pulo,16))).upper()}"
+                imprimir = f"   {instrucao} {variavel}                    	PC={tX(completaZeroHexa(hex(int(pulo,16))).upper())}"
                 arqOutput.write(pc+":"+imprimir+"\n")
-                print(f"{instrucao} {variavel}                    	PC={completaZeroHexa(hex(int(pulo,16))).upper()}")
+                print(f"{instrucao} {variavel}                    	PC={tX(completaZeroHexa(hex(int(pulo,16))).upper())}")
             
             elif operacao == "110001":
                 listaRegistradores[28] = completaZeroHexa(hex(int(c,2)))
@@ -1442,9 +1441,9 @@ for d in range(162):
                 else:
                     pulo = completaZeroHexa(hex(proxPC+4))
                  
-                imprimir = f"   {instrucao} {variavel}                    	PC={completaZeroHexa(hex(int(pulo,16))).upper()}"
+                imprimir = f"   {instrucao} {variavel}                    	PC={tX(completaZeroHexa(hex(int(pulo,16))).upper())}"
                 arqOutput.write(pc+":"+imprimir+"\n")
-                print(f"{instrucao} {variavel}                    	PC={completaZeroHexa(hex(int(pulo,16))).upper()}")
+                print(f"{instrucao} {variavel}                    	PC={tX(completaZeroHexa(hex(int(pulo,16))).upper())}")
 
             elif operacao == "110010":
                 listaRegistradores[28] = completaZeroHexa(hex(int(c,2)))
@@ -1457,9 +1456,9 @@ for d in range(162):
                 else:
                     pulo = completaZeroHexa(hex(proxPC+4))
                  
-                imprimir = f"   {instrucao} {variavel}                    	PC={completaZeroHexa(hex(int(pulo,16))).upper()}"
+                imprimir = f"   {instrucao} {variavel}                    	PC={tX(completaZeroHexa(hex(int(pulo,16))).upper())}"
                 arqOutput.write(pc+":"+imprimir+"\n")
-                print(f"{instrucao} {variavel}                    	PC={completaZeroHexa(hex(int(pulo,16))).upper()}")
+                print(f"{instrucao} {variavel}                    	PC={tX(completaZeroHexa(hex(int(pulo,16))).upper())}")
 
             elif operacao == "110011":
                 listaRegistradores[28] = completaZeroHexa(hex(int(c,2)))
@@ -1472,9 +1471,9 @@ for d in range(162):
                 else:
                     pulo = completaZeroHexa(hex(proxPC+4))
                  
-                imprimir = f"   {instrucao} {variavel}                    	PC={completaZeroHexa(hex(int(pulo,16))).upper()}"
+                imprimir = f"   {instrucao} {variavel}                    	PC={tX(completaZeroHexa(hex(int(pulo,16))).upper())}"
                 arqOutput.write(pc+":"+imprimir+"\n")
-                print(f"{instrucao} {variavel}                    	PC={completaZeroHexa(hex(int(pulo,16))).upper()}")
+                print(f"{instrucao} {variavel}                    	PC={tX(completaZeroHexa(hex(int(pulo,16))).upper())}")
             
             elif operacao == "110100":
                 listaRegistradores[28] = completaZeroHexa(hex(int(c,2)))
@@ -1487,9 +1486,9 @@ for d in range(162):
                 else:
                     pulo = completaZeroHexa(hex(proxPC+4))
                 
-                imprimir = f"   {instrucao} {variavel}                    	PC={completaZeroHexa(hex(int(pulo,16))).upper()}"
+                imprimir = f"   {instrucao} {variavel}                    	PC={tX(completaZeroHexa(hex(int(pulo,16))).upper())}"
                 arqOutput.write(pc+":"+imprimir+"\n")
-                print(f"{instrucao} {variavel}                    	PC={completaZeroHexa(hex(int(pulo,16))).upper()}")
+                print(f"{instrucao} {variavel}                    	PC={tX(completaZeroHexa(hex(int(pulo,16))).upper())}")
              
             elif operacao == "110101":
                 listaRegistradores[28] = completaZeroHexa(hex(int(c,2)))
@@ -1502,9 +1501,9 @@ for d in range(162):
                 else:
                     pulo = completaZeroHexa(hex(proxPC+4))
                  
-                imprimir = f"   {instrucao} {variavel}                    	PC={completaZeroHexa(hex(int(pulo,16))).upper()}"
+                imprimir = f"   {instrucao} {variavel}                    	PC={tX(completaZeroHexa(hex(int(pulo,16))).upper())}"
                 arqOutput.write(pc+":"+imprimir+"\n")
-                print(f"{instrucao} {variavel}                    	PC={completaZeroHexa(hex(int(pulo,16))).upper()}")
+                print(f"{instrucao} {variavel}                    	PC={tX(completaZeroHexa(hex(int(pulo,16))).upper())}")
 
             elif operacao == "110110":
                 listaRegistradores[28] = completaZeroHexa(hex(int(c,2)))
@@ -1517,9 +1516,9 @@ for d in range(162):
                 else:
                     pulo = completaZeroHexa(hex(proxPC+4))
                 
-                imprimir = f"   {instrucao} {variavel}                    	PC={completaZeroHexa(hex(int(pulo,16))).upper()}"
+                imprimir = f"   {instrucao} {variavel}                    	PC={tX(completaZeroHexa(hex(int(pulo,16))).upper())}"
                 arqOutput.write(pc+":"+imprimir+"\n")
-                print(f"{instrucao} {variavel}                    	PC={completaZeroHexa(hex(int(pulo,16))).upper()}")
+                print(f"{instrucao} {variavel}                    	PC={tX(completaZeroHexa(hex(int(pulo,16))).upper())}")
 
             elif operacao == "111000":
                 listaRegistradores[28] = completaZeroHexa(hex(int(c,2)))
@@ -1532,9 +1531,9 @@ for d in range(162):
                 else:
                     pulo = completaZeroHexa(hex(proxPC+4))
                 
-                imprimir = f"   {instrucao} {variavel}                    	PC={completaZeroHexa(hex(int(pulo,16))).upper()}"
+                imprimir = f"   {instrucao} {variavel}                    	PC={tX(completaZeroHexa(hex(int(pulo,16))).upper())}"
                 arqOutput.write(pc+":"+imprimir+"\n")
-                print(f"{instrucao} {variavel}                    	PC={completaZeroHexa(hex(int(pulo,16))).upper()}")
+                print(f"{instrucao} {variavel}                    	PC={tX(completaZeroHexa(hex(int(pulo,16))).upper())}")
 
 
             elif operacao == "111001":
@@ -1634,13 +1633,13 @@ for d in range(162):
                 else:
                     listaRegistradores[rZ] = listaRegistradores[rZ]
                     listaRegisDEC[rZ] = listaRegisDEC[rZ] 
-                srHEXA = completaZeroHexa(hex(int("0b"+"".join(sr),2)))
+                srHEXA = tX(completaZeroHexa(hex(int("0b"+"".join(sr),2))).upper())
                 listaRegistradores[31] = srHEXA
                 
                 
-                imprimir = f"   {instrucao} {registradorZ},{registradorX},{im}           	{registradorZ.upper()}={registradorX.upper()}+{completaZeroHexa(hex(im))}={listaRegistradores[rZ].upper()},SR={srHEXA.upper()}"
+                imprimir = f"   {instrucao} {registradorZ},{registradorX},{im}           	{registradorZ.upper()}={registradorX.upper()}+{completaZeroHexa(hex(im))}={tX(listaRegistradores[rZ].upper())},SR={srHEXA}"
                 arqOutput.write(pc+":"+imprimir+"\n")
-                print(f"{instrucao} {registradorZ},{registradorX},{im}           	{registradorZ.upper()}={registradorX.upper()}+{completaZeroHexa(hex(im))}={listaRegistradores[rZ].upper()},SR={srHEXA.upper()}")
+                print(f"{instrucao} {registradorZ},{registradorX},{im}           	{registradorZ.upper()}={registradorX.upper()}+{completaZeroHexa(hex(im))}={tX(listaRegistradores[rZ].upper())},SR={srHEXA}")
 
             elif operacao == "010011":
                 listaRegistradores[28] = completaZeroHexa(hex(int(c,2)))
@@ -1701,11 +1700,11 @@ for d in range(162):
                     listaRegisDEC[rZ] = listaRegisDEC[rZ]
 
                 
-                srHEXA = completaZeroHexa(hex(int("0b"+"".join(sr),2)))
+                srHEXA = tX(completaZeroHexa(hex(int("0b"+"".join(sr),2))).upper())
                 listaRegistradores[31] = srHEXA
-                imprimir = f"   {instrucao} r{registradorZ},r{registradorX},r{num2}           	R{registradorZ}=R{registradorX}-R{num2}={variavelHEXA.upper()},SR={srHEXA.upper()}"
+                imprimir = f"   {instrucao} {registradorZ},{registradorX},{im}           	{registradorZ.upper()}={registradorX.upper()}-{completaZeroHexa(hex(im))}={tX(completaZeroHexa(hex(num1-num2)).upper())},SR={srHEXA}"
                 arqOutput.write(pc+":"+imprimir+"\n")
-                print(f"{instrucao} {registradorZ},{registradorX},{im}           	{registradorZ.upper()}={registradorX.upper()}-{completaZeroHexa(hex(im))}={completaZeroHexa(hex(num1-num2))},SR={srHEXA.upper()}")
+                print(f"{instrucao} {registradorZ},{registradorX},{im}           	{registradorZ.upper()}={registradorX.upper()}-{completaZeroHexa(hex(im))}={tX(completaZeroHexa(hex(num1-num2)).upper())},SR={srHEXA}")
             
             elif operacao == "010111":
                 listaRegistradores[28] = completaZeroHexa(hex(int(c,2)))
@@ -1766,7 +1765,7 @@ for d in range(162):
                     listaRegisDEC[rZ] = listaRegisDEC[rZ]
 
                 
-                srHEXA = completaZeroHexa(hex(int("0b"+"".join(sr),2)))
+                srHEXA = tX(completaZeroHexa(hex(int("0b"+"".join(sr),2))).upper())
                 listaRegistradores[31] = srHEXA
 
                 imprimir = f"   {instrucao} {registradorX},{i}              	SR={srHEXA}"
@@ -1821,12 +1820,12 @@ for d in range(162):
                 else:
                     sr[25] = "0"
                
-                srHEXA = completaZeroHexa(hex(int("0b"+"".join(sr),2)))
+                srHEXA = tX(completaZeroHexa(hex(int("0b"+"".join(sr),2))).upper())
 
                 listaRegistradores[31] = srHEXA
-
-                imprimir = f"   {instrucao},{registradorZ},{registradorX},{im}         	{registradorZ.upper()}={registradorX.upper()}*{completaZeroHexa(hex(im))}={variavelHexa.upper()}, SR={srHEXA.upper()}"
-                print(f"{instrucao},{registradorZ},{registradorX},{im}         	{registradorZ.upper()}={registradorX.upper()}*{completaZeroHexa(hex(int(n2,2)))}={variavelHexa.upper()}, SR={srHEXA.upper()}")
+                imprimir = f"   {instrucao} {registradorZ},{registradorX},{im}         	{registradorZ.upper()}={registradorX.upper()}*{tX(completaZeroHexa(hex(int(n2,2))).upper())}={tX(variavelHexa.upper())}, SR={srHEXA}"
+                arqOutput.write(pc+":"+imprimir+"\n")
+                print(f"{instrucao} {registradorZ},{registradorX},{im}         	{registradorZ.upper()}={registradorX.upper()}*{completaZeroHexa(hex(int(n2,2)))}={tX(variavelHexa.upper())}, SR={srHEXA}")
             
             elif operacao == "010101":
                 listaRegistradores[28] = completaZeroHexa(hex(int(c,2)))
@@ -1865,7 +1864,7 @@ for d in range(162):
                 
                 if num2 < 0:
                     divHex = complementa2(completaZero(bin(abs(num2))))
-                    divHex = tX(completaZeroHexa(hex(int(divHex,2)))).upper()
+                    divHex = completaZeroHexa(hex(int(divHex,2)))
                 else:
                     divHex = completaZeroHexa(hex(num2))
                 
@@ -1893,12 +1892,12 @@ for d in range(162):
                 if listaRegistradores[L4] != "0x00000000":
                     sr[28] = "0"
 
-                srHEXA = completaZeroHexa(hex(int("0b"+"".join(sr),2)))
+                srHEXA = tX(completaZeroHexa(hex(int("0b"+"".join(sr),2))).upper())
                 listaRegistradores[31] = srHEXA
 
-                imprimir = f"   {instrucao} {registradorZ},{registradorX},{num2}      	{registradorZ.upper()}={registradorX.upper()}/{divHex}={variavelHEXA}, SR={srHEXA}"
+                imprimir = f"   {instrucao} {registradorZ},{registradorX},{num2}      	{registradorZ.upper()}={registradorX.upper()}/{tX(divHex.upper())}={variavelHEXA}, SR={srHEXA}"
                 arqOutput.write(pc+":"+imprimir+"\n")
-                print(f"{instrucao} {registradorZ},{registradorX},{num2}      	{registradorZ.upper()}={registradorX.upper()}/{divHex}={variavelHEXA}, SR={srHEXA}")
+                print(f"{instrucao} {registradorZ},{registradorX},{num2}      	{registradorZ.upper()}={registradorX.upper()}/{tX(divHex.upper())}={variavelHEXA}, SR={srHEXA}")
             
             elif operacao == "010110":
                 listaRegistradores[28] = completaZeroHexa(hex(int(c,2)))
@@ -1965,13 +1964,13 @@ for d in range(162):
                 if listaRegistradores[L4] != "0x00000000":
                     sr[28] = "0"
 
-                srHEXA = completaZeroHexa(hex(int("0b"+"".join(sr),2)))
+                srHEXA = tX(completaZeroHexa(hex(int("0b"+"".join(sr),2))).upper())
                 listaRegistradores[31] = srHEXA
                 
                 
                 
 
-                imprimir = f"   {instrucao} r{registradorZ},r{registradorX},{i}      	R{registradorZ}=R{registradorX}%R{completaZeroHexa(hex(i))}={variavelHEXA}, SR={srHEXA}"
+                imprimir = f"   {instrucao} {registradorZ},{registradorX},{num2}      	{registradorZ.upper()}={tX(registradorX.upper())}%{tX(divHex.upper())}={variavelHEXA}, SR={srHEXA}"
                 arqOutput.write(pc+":"+imprimir+"\n")
                 print(f"{instrucao} {registradorZ},{registradorX},{num2}      	{registradorZ.upper()}={registradorX.upper()}%{divHex}={variavelHEXA}, SR={srHEXA}")
             
@@ -2004,7 +2003,7 @@ for d in range(162):
                 listaRegisDEC[rZ] = int(listaRegistradores[rZ],16)
                 end = tX(completaZeroHexa(hex((listaRegisDEC[rX] + i))).upper())
                 valor = completaZeroHexa8(listaRegistradores[rZ])
-                imprimir = f"   {instrucao} r{registradorZ},[r{registradorX}+{i}]           	{registradorZ}=MEM[{end}]={valor}"
+                imprimir = f"   {instrucao} {registradorZ},[{registradorX}+{i}]           	{registradorZ.upper()}=MEM[{end}]={valor}"
                 arqOutput.write(pc+":"+imprimir+"\n")
                 print(f"{instrucao} {registradorZ},[{registradorX}+{i}]           	{registradorZ.upper()}=MEM[{end}]={valor}")
             
@@ -2031,9 +2030,9 @@ for d in range(162):
                 end = tX(completaZeroHexa(hex((listaRegisDEC[rX] + i)<<1)).upper())
                 valor = (listaRegistradores[rZ])
                 
-                imprimir = f"   {instrucao} {registradorZ},[{registradorX}+{i}]           	{registradorZ}=MEM[{end}]={valor}"
+                imprimir = f"   {instrucao} {registradorZ},[{registradorX}+{i}]           	{registradorZ.upper()}=MEM[{end}]={valor}"
                 arqOutput.write(pc+":"+imprimir+"\n")
-                print(f"{instrucao} {registradorZ},[{registradorX}+{i}]           	{registradorZ}=MEM[{end}]={valor}")
+                print(f"{instrucao} {registradorZ},[{registradorX}+{i}]           	{registradorZ.upper()}=MEM[{end}]={valor}")
             
             elif operacao == "011010":
                 listaRegistradores[28] = completaZeroHexa(hex(int(c,2)))
@@ -2051,7 +2050,7 @@ for d in range(162):
                 end = tX(completaZeroHexa(hex((listaRegisDEC[rX] + i)<<2)).upper())
                 valor = (listaRegistradores[rZ])
                 
-                imprimir = f"   {instrucao} r{registradorZ},[r{registradorX}+{i}]           	R{registradorZ}=MEM[{end}]={valor}"
+                imprimir = f"   {instrucao} {registradorZ},[{registradorX}+{i}]           	{registradorZ.upper()}=MEM[{end}]={valor}"
                 arqOutput.write(pc+":"+imprimir+"\n")
                 print(f"{instrucao} {registradorZ},[{registradorX}+{i}]           	{registradorZ.upper()}=MEM[{end}]={valor}")
             
@@ -2070,9 +2069,9 @@ for d in range(162):
                 end = tX((completaZeroHexa(hex(listaRegisDEC[rX] + i))).upper())
                 valor = completaZeroHexa8(mem[int(end,16)])
                 
-                imprimir = f"   {instrucao} [{registradorX}+{i}] {registradorZ}         	MEM[{end}]={registradorZ.upper()}={valor}"
+                imprimir = f"   {instrucao} [{registradorX}+{i}],{registradorZ}         	MEM[{end}]={registradorZ.upper()}={valor}"
                 arqOutput.write(pc+":"+imprimir+"\n")
-                print(f"{instrucao} [{registradorX}+{i}] {registradorZ}         	MEM[{end}]={registradorZ.upper()}={valor}")
+                print(f"{instrucao} [{registradorX}+{i}],{registradorZ}         	MEM[{end}]={registradorZ.upper()}={valor}")
             
             elif operacao == "011100":
                 listaRegistradores[28] = completaZeroHexa(hex(int(c,2)))
@@ -2089,9 +2088,9 @@ for d in range(162):
                 end = tX((completaZeroHexa(hex((listaRegisDEC[rX] + i)<<1))).upper())
                 valor = completaZeroHexa16(mem[int(end,16)])
                 
-                imprimir = f"   {instrucao} [{registradorX}+{i}] {registradorZ}         	MEM[{end}]={registradorZ.upper()}={valor}"
+                imprimir = f"   {instrucao} [{registradorX}+{i}],{registradorZ}         	MEM[{end}]={registradorZ.upper()}={valor}"
                 arqOutput.write(pc+":"+imprimir+"\n")
-                print(f"{instrucao} [{registradorX}+{i}] {registradorZ}         	MEM[{end}]={registradorZ.upper()}={valor}")
+                print(f"{instrucao} [{registradorX}+{i}],{registradorZ}         	MEM[{end}]={registradorZ.upper()}={valor}")
             
             elif operacao == "011101":
                 listaRegistradores[28] = completaZeroHexa(hex(int(c,2)))
@@ -2108,9 +2107,9 @@ for d in range(162):
                 end = tX((completaZeroHexa(hex((listaRegisDEC[rX] + i)<<2))).upper())
                 valor = completaZeroHexa(mem[int(end,16)])
                 
-                imprimir = f"   {instrucao} r{registradorZ},[r{registradorX}+{i}]           	R{registradorZ}=MEM[{end}]={valor}"
+                imprimir = f"   {instrucao} [{registradorX}+{i}],{registradorZ}           	MEM[{end}]={registradorZ.upper()}={valor}"
                 arqOutput.write(pc+":"+imprimir+"\n")
-                print(f"{instrucao} [{registradorX}+{i}] {registradorZ}           	MEM[{end}]={registradorZ.upper()}={valor}")
+                print(f"{instrucao} [{registradorX}+{i}],{registradorZ}           	MEM[{end}]={registradorZ.upper()}={valor}")
             
             elif operacao == "011110":
                 listaRegistradores[28] = completaZeroHexa(hex(int(c,2)))
@@ -2131,7 +2130,7 @@ for d in range(162):
                 binario[sp] = binario[((proxPC+4)//4)]
                 pulo = completaZeroHexa(hex(int(listaRegisDEC[rX] + variavel)*4))
                 proxIns = binario[variavel+(listaRegisDEC[rX])]
-                imprimir = f"   {instrucao} {variavel}             	PC={completaZeroHexa(hex(int(pulo,16))).upper()},MEM[{listaRegistradores[30]}]={pc4}"
+                imprimir = f"   {instrucao} [{registradorX}+{variavel}]             	PC={tX(completaZeroHexa(hex(int(pulo,16))).upper())},MEM[{tX(listaRegistradores[30].upper())}]={pc4}"
                 arqOutput.write(pc+":"+imprimir+"\n")
                 print(f"{instrucao} [{registradorX}+{variavel}]             	PC={tX(completaZeroHexa(hex(int(pulo,16))).upper())},MEM[{tX(listaRegistradores[30].upper())}]={pc4}")
                 sp = sp - 4
