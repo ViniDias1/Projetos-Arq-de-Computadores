@@ -224,7 +224,7 @@ for d in range(180):
                     listaRegisDEC[rZ] = listaRegisDEC[rZ]
 
                 
-                imprimir = f"   {instrucao} {registradorZ},{variavelDEC}               	{tX(registradorZ.upper())}={variavelHEXA}"
+                imprimir = f"   {instrucao} {registradorZ},{variavelDEC:<13}{tX(registradorZ.upper()):>10}={variavelHEXA}"
                 arqOutput.write(pc+":"+imprimir+"\n")
                 print(f"    {instrucao} {registradorZ},{variavelDEC}               	{(registradorZ.upper())}={variavelHEXA}")
       #-------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -254,7 +254,7 @@ for d in range(180):
                     listaRegisDEC[rZ] = listaRegisDEC[rZ]
 
                 
-                imprimir = f"   {instrucao} {registradorZ},{variavelDEC}         	{registradorZ.upper()}={variavelHEXA}"
+                imprimir = f"   {instrucao} {registradorZ},{variavelDEC:<5}         	{registradorZ.upper()}={variavelHEXA}"
                 arqOutput.write(pc+":"+imprimir+"\n")
                 print(f"{instrucao} {registradorZ},{variavelDEC}         	{registradorZ.upper()}={variavelHEXA}")
       #-------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -521,7 +521,7 @@ for d in range(180):
                     srHEXA = tX(completaZeroHexa(hex(int("0b"+"".join(sr),2))).upper())
 
                     listaRegistradores[31] = srHEXA
-                    imprimir = f"{instrucao} {rl4},{registradorZ},{registradorX},{registradorY}         	{rl4.upper()}:{registradorZ.upper()}={registradorX.upper()}*{registradorY.upper()}={tX(variavelHexa.upper())}, SR={srHEXA}"
+                    imprimir = f"   {instrucao} {rl4},{registradorZ},{registradorX},{registradorY}         	{rl4.upper()}:{registradorZ.upper()}={registradorX.upper()}*{registradorY.upper()}={tX(variavelHexa.upper())}, SR={srHEXA}"
                     arqOutput.write(pc+":"+imprimir+"\n")
                     print(f"{instrucao} {rl4},{registradorZ},{registradorX},{registradorY}         	{rl4.upper()}:{registradorZ.upper()}={registradorX.upper()}*{registradorY.upper()}={tX(variavelHexa.upper())}, SR={srHEXA}")
       #-------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1898,24 +1898,29 @@ for d in range(180):
                 if num2 == 0:
                     zd = "1"
                     sr[26] = zd
-                    num2 = 1
                 else:
                     sr[26] = "0"
                 
                 if num2 < 0:
                     divHex = complementa2(completaZero(bin(abs(num2))))
                     divHex = completaZeroHexa(hex(int(divHex,2)))
+                elif num2 == 0:
+                    divHex = completaZeroHexa(hex(0))
+                    num2 = 1
                 else:
                     divHex = completaZeroHexa(hex(num2))
                 
                             
                 divisaoNormal = int((num1/num2))
-                
-                if divisaoNormal < 0:
+                if im == 0:
+                    divisaoNormal = 4
+                    dvn = "0x00000004"
+                elif divisaoNormal < 0:
                     dvn = complementa2(completaZero(bin(abs(divisaoNormal)).strip("-")[2:]))
                     dvn = completaZeroHexa(hex(int(dvn,2)))
                 else:
                     dvn = completaZeroHexa(hex(divisaoNormal))
+                
                 variavelHEXA = tX(dvn.upper())
                 listaRegistradores[rZ] = variavelHEXA
                 listaRegisDEC[rZ] = divisaoNormal
@@ -1923,19 +1928,17 @@ for d in range(180):
                     listaRegistradores[rZ] = completaZeroHexa(hex(0))                    
                     listaRegisDEC[rZ] = 0
                     
-                
-                if listaRegisDEC[rZ] == 0:
+                if (listaRegisDEC[rZ] == 0) or (dvn == "0x00000004"):
                     zn = '1'
                     sr[25] = zn
                 else:
                     sr[25] = "0"
-                if listaRegistradores[L4] != "0x00000000":
-                    sr[28] = "0"
+                sr[28] = "0"
 
                 srHEXA = tX(completaZeroHexa(hex(int("0b"+"".join(sr),2))).upper())
                 listaRegistradores[31] = srHEXA
 
-                imprimir = f"   {instrucao} {registradorZ},{registradorX},{num2}      	{registradorZ.upper()}={registradorX.upper()}/{tX(divHex.upper())}={variavelHEXA}, SR={srHEXA}"
+                imprimir = f"   {instrucao} {registradorZ},{registradorX},{im}      	{registradorZ.upper()}={registradorX.upper()}/{tX(divHex.upper())}={variavelHEXA}, SR={srHEXA}"
                 arqOutput.write(pc+":"+imprimir+"\n")
                 print(f"{instrucao} {registradorZ},{registradorX},{num2}      	{registradorZ.upper()}={registradorX.upper()}/{tX(divHex.upper())}={variavelHEXA}, SR={srHEXA}")
             
@@ -1996,7 +1999,7 @@ for d in range(180):
                     listaRegisDEC[rZ] = 0
                     
                 
-                if listaRegisDEC[rZ] == 0:
+                if (listaRegisDEC[rZ] == 0):
                     zn = '1'
                     sr[25] = zn
                 else:
