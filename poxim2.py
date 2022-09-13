@@ -13,7 +13,7 @@ from math import ceil,floor
 
 arqInput = open("ordenacaoPoxim.hex.txt",'r')
 arqOutput = open("saida.out.txt",'w')
-
+start = time.perf_counter()
 hexa = []
 aux = 0
 binario = [("0b00000000000000000000000000000000")]*(32765)
@@ -2175,14 +2175,14 @@ while True:
                     end = "0x80808880"
                     valor = listaRegistradores[rZ]
                     X = int(valor,16)
-                    expoente1 = completaZero(bin(X)[2:])[1:9]
+                    expoente1 = abs(int(completaZero(bin(X)[2:])[1:9],2))
                     mem[INDEX0x80808880] = valor
 
                 elif hex((listaRegisDEC[rX] + i)<<2) == "0x80808884":
                     end = "0x80808884"
                     valor = listaRegistradores[rZ]
                     Y = int(valor,16)
-                    expoente2 = completaZero(bin(Y)[2:])[1:9]
+                    expoente2 = abs(int(completaZero(bin(Y)[2:])[1:9],2))
                     mem[INDEX0x80808884] = valor
 
                 elif hex((listaRegisDEC[rX] + i)<<2) == "0x80808888":
@@ -2375,7 +2375,14 @@ while True:
                 z = float(X + Y)
                 mem[INDEX0x80808888] = tX(floatHEX(z).upper())
                 mem[INDEX0x8080888F] = '0x00000000'#completaZeroHexa(hex(int(("0"*26 + st + opFPU),2)))
-                cicloVAR = abs(int(expoente1,2) - int(expoente2,2)) + 1
+                expoente1 = abs(expoente1-127)
+                expoente2 = abs(expoente2-127)
+                
+                # if expoente1 == -127:
+                #     expoente1 = 0
+                # if expoente2 == -127:
+                #     expoente2 = 0
+                cicloVAR = abs(expoente1 - expoente2) + 1
                 st = "0"
                 opFPU = "00000"
             elif opFPU == "00010":
@@ -2383,7 +2390,13 @@ while True:
                 z = float(X - Y)
                 mem[INDEX0x80808888] = tX(floatHEX(z).upper())
                 mem[INDEX0x8080888F] = '0x00000000'#completaZeroHexa(hex(int(("0"*26 + st + opFPU),2)))
-                cicloVAR = abs(int(expoente1,2) - int(expoente2,2)) + 1
+                expoente1 = abs(expoente1-127)
+                expoente2 = abs(expoente2-127)
+                # if expoente1 == -127:
+                #     expoente1 = 0
+                # elif expoente2 == -127:
+                #     expoente2 = 0
+                cicloVAR = abs(expoente1 - expoente2) + 1
                 st = "0"
                 opFPU = "00000"
             elif opFPU == "00011":
@@ -2391,7 +2404,13 @@ while True:
                 z = float(X * Y)
                 mem[INDEX0x80808888] = tX(floatHEX(z).upper())
                 mem[INDEX0x8080888F] = '0x00000000'#completaZeroHexa(hex(int(("0"*26 + st + opFPU),2)))
-                cicloVAR = abs(int(expoente1,2) - int(expoente2,2)) + 1
+                expoente1 = abs(expoente1-127)
+                expoente2 = abs(expoente2-127)
+                if expoente1 == -127:
+                    expoente1 = 0
+                elif expoente2 == -127:
+                    expoente2 = 0
+                cicloVAR = abs(expoente1 - expoente2) + 1
                 st = "0"
                 opFPU = "00000"
             elif opFPU == "00100":
@@ -2400,14 +2419,20 @@ while True:
                 
                 mem[INDEX0x80808888] = tX(floatHEX(z).upper())
                 mem[INDEX0x8080888F] = '0x00000000'#completaZeroHexa(hex(int(("0"*26 + st + opFPU),2)))
-                cicloVAR = abs(int(expoente1,2) - int(expoente2,2)) + 1
+                expoente1 = abs(expoente1-127)
+                expoente2 = abs(expoente2-127)
+                if expoente1 == -127:
+                    expoente1 = 0
+                elif expoente2 == -127:
+                    expoente2 = 0
+                cicloVAR = abs(expoente1 - expoente2) + 1
                 st = "0"
                 opFPU = "00000"
             elif opFPU == "00101":
                 #Atribuicao10000000
                 X = z
                 mem[INDEX0x80808880] = mem[INDEX0x80808888]
-                expoente1 = completaZero(bin(int(mem[INDEX0x80808880],16))[2:])[1:9]
+                expoente1 = int(completaZero(bin(int(mem[INDEX0x80808880],16))[2:])[1:9],2)
                 mem[INDEX0x8080888F] = '0x00000000'#completaZeroHexa(hex(int(("0"*26 + st + opFPU),2)))
                 cicloCONS = 1
                 st = "0"
@@ -2417,7 +2442,7 @@ while True:
                 Y = z
                 mem[INDEX0x80808884] = mem[INDEX0x80808888]
                 mem[INDEX0x8080888F] = '0x00000000'#completaZeroHexa(hex(int(("0"*26 + st + opFPU),2)))
-                expoente2 = completaZero(bin(int(mem[INDEX0x80808884],16))[2:])[1:9]
+                expoente2 = int(completaZero(bin(int(mem[INDEX0x80808880],16))[2:])[1:9],2)
                 cicloCONS = 1
                 st = "0"
                 opFPU = "00000"
@@ -2496,6 +2521,7 @@ if ativaTerminal == 1:
     #terminal.remove("0x00000000")
     ter = 0
     teste = 0
+    
     for ter in terminal:
         if terminal[teste] == "-1":
             break
@@ -2504,14 +2530,17 @@ if ativaTerminal == 1:
             #imprimirTerminal = imprimirTerminal + chr((int(bin(int(ter,16)),2)))
             teste+= 1
             #else:
+            if teste == 51:
+                imprimirTerminal = imprimirTerminal + "\n"
             imprimirTerminal = imprimirTerminal + (str(int(bin(int(ter,16)),2))) + " "
             #ter = ter + 4
     
     arqOutput.write("[TERMINAL]\n")
-    arqOutput.write(imprimirTerminal)
+    arqOutput.write(imprimirTerminal+"\n")
     
     
-
+end = time.perf_counter()
+print(end - start)
 arqOutput.write("\n[END OF SIMULATION]")
 arqInput.close()
 arqOutput.close()
