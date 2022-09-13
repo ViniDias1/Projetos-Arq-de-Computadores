@@ -24,12 +24,12 @@
     // Funcao Bubble sort
     
     bbSort:
-    	cmpi r3, 3
+    	cmpi r3, 19
         mov r7, vetor
         mov r8, vetor
         mov r9, vetor
         beq 20
-        cmpi r4, 3
+        cmpi r4, 19
         beq 15
         l32 r10,[r8]   
 		addi r8, r8, 4 
@@ -67,7 +67,7 @@
         mov r2,0
         mov r3, 0
         mov r4, 0
-        call imprimirORDEMNORMAL
+        //call imprimirORDEMNORMAL
         call bbSort
         call imprimirBBSORT
         
@@ -80,7 +80,8 @@
     	.4byte 0x8888888B
     vetor:
     	//.fill 3, 4, 0xABCDEF01
-    .4byte 0x00000003, 0x00000001,0x00000002,0x00000004
+    .4byte 0x0000000A,0x00000009,0x00000008,0x00000007,0x00000006,0x00000005,0x00000004,0x00000003,0x00000002,0x00000001,0x000000E3,0x000000F2,0x0000000A2,0x0000000D9,0x0000000B1,0x000000C7,0x000000F5,0x000000A1,0x000000B4,0x000000F6
+
 
         
         
