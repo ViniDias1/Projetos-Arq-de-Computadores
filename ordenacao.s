@@ -9,6 +9,15 @@
      // r3 = iterador i
      // r4 = iterador k
      
+     
+     lerIN:
+     	// r17 = IN
+     	mov r8, vetor
+        l8 r17, [r1] 
+        s32 [r8], r17
+        addi r8,r8,4
+		ret
+     
      // Funcao ordem normal dos numeros    
     imprimirORDEMNORMAL: 
     	mov r8, vetor 
@@ -67,8 +76,13 @@
         mov r2,0
         mov r3, 0
         mov r4, 0
+        //leitura do IN para o TERMINAL
+        //call lerIN
+        //ler o numeros do vetor na ordem normal
         //call imprimirORDEMNORMAL
+        //ordena o vetor
         call bbSort
+        //ler o vetor ordenado
         call imprimirBBSORT
         
 		// Finalização da execução
@@ -79,7 +93,7 @@
     terminal:
     	.4byte 0x8888888B
     vetor:
-    	//.fill 3, 4, 0xABCDEF01
+    	//.fill 400
     .4byte 0x0000000A,0x00000009,0x00000008,0x00000007,0x00000006,0x00000005,0x00000004,0x00000003,0x00000002,0x00000001,0x000000E3,0x000000F2,0x0000000A2,0x0000000D9,0x0000000B1,0x000000C7,0x000000F5,0x000000A1,0x000000B4,0x000000F6
 
 
