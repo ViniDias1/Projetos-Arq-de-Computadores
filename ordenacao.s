@@ -21,23 +21,25 @@
      
     // Funcao ordem normal dos numeros    
     imprimirORDEMNORMAL: 
+    	mov r20,0
     	mov r8, vetor 
         l8 r10, [r8]  
-        cmpi r10, 0        
-        beq 3       
+        cmpi r20, 399      
+        beq 4     
         s8 [r1], r10      
         addi r8, r8, 1
-        bun -6        
+        addi r20,r20,1
+        bun -7     
         ret
         
     // Funcao Bubble sort
     bbSort:
-    	cmpi r3, 399
+    	cmpi r3, 99
         mov r7, vetor
         mov r8, vetor
         mov r9, vetor
         beq 20
-        cmpi r4, 399
+        cmpi r4, 99
         beq 15
         l32 r10,[r8]   
 		addi r8, r8, 4 
@@ -60,13 +62,15 @@
         ret
         
     imprimirBBSORT:
-    	mov r8, vetor 
+    	mov r20,0
+    	//mov r8, vetor 
         l8 r10, [r8]  
-        cmpi r10, 0        
-        beq 3       
+        cmpi r20, 399      
+        beq 4     
         s8 [r1], r10      
-        addi r8, r8, 1 
-        bun -6        
+        addi r8, r8, 1
+        addi r20,r20,1
+        bun -7     
         ret
    
 	// Função principal
@@ -75,7 +79,7 @@
     	mov sp, 0x7FFC
         l32 r1, [terminal]
         mov r2, 0
-        mov r3, 0
+        mov r3, 0	
         mov r4, 0
         
         //leitura do IN para o TERMINAL
@@ -95,11 +99,4 @@
     	.4byte 0x8888888B
     vetor:
     	.fill 400
-    
-
-
-        
-        
-        
-        
         
