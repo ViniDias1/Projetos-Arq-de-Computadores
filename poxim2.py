@@ -10,8 +10,9 @@ import struct
 from math import ceil,floor
 
 
-
-arqInput = open("2_fpu.hex.txt",'r')
+r = 0
+auxTerminal = "0x"
+arqInput = open("ordenacaoPoxim.hex.txt",'r')
 arqOutput = open("saida.out.txt",'w')
 start = time.perf_counter()
 hexa = []
@@ -19,7 +20,107 @@ aux = 0
 binario = [("0b00000000000000000000000000000000")]*(32765)
 mem = ([("0x00000000")]*(32765))
 i = 0
-
+testeTerminal = [
+'0x00','0x00','0x39','0x39',
+'0x00','0x00','0x39','0x38',
+'0x00','0x00','0x39','0x37',
+'0x00','0x00','0x39','0x36',
+'0x00','0x00','0x39','0x35',
+'0x00','0x00','0x39','0x34',
+'0x00','0x00','0x39','0x33',
+'0x00','0x00','0x39','0x32',
+'0x00','0x00','0x39','0x31',
+'0x00','0x00','0x39','0x30',
+'0x00','0x00','0x38','0x39',
+'0x00','0x00','0x38','0x38',
+'0x00','0x00','0x38','0x37',
+'0x00','0x00','0x38','0x36',
+'0x00','0x00','0x38','0x35',
+'0x00','0x00','0x38','0x34',
+'0x00','0x00','0x38','0x33',
+'0x00','0x00','0x38','0x32',
+'0x00','0x00','0x38','0x31',
+'0x00','0x00','0x38','0x30',
+'0x00','0x00','0x37','0x39',
+'0x00','0x00','0x37','0x38',
+'0x00','0x00','0x37','0x37',
+'0x00','0x00','0x37','0x36',
+'0x00','0x00','0x37','0x35',
+'0x00','0x00','0x37','0x34',
+'0x00','0x00','0x37','0x33',
+'0x00','0x00','0x37','0x32',
+'0x00','0x00','0x37','0x31',
+'0x00','0x00','0x37','0x30',
+'0x00','0x00','0x36','0x39',
+'0x00','0x00','0x36','0x38',
+'0x00','0x00','0x36','0x37',
+'0x00','0x00','0x36','0x36',
+'0x00','0x00','0x36','0x35',
+'0x00','0x00','0x36','0x34',
+'0x00','0x00','0x36','0x33',
+'0x00','0x00','0x36','0x32',
+'0x00','0x00','0x36','0x31',
+'0x00','0x00','0x36','0x30',
+'0x00','0x00','0x35','0x39',
+'0x00','0x00','0x35','0x38',
+'0x00','0x00','0x35','0x37',
+'0x00','0x00','0x35','0x36',
+'0x00','0x00','0x35','0x35',
+'0x00','0x00','0x35','0x34',
+'0x00','0x00','0x35','0x33',
+'0x00','0x00','0x35','0x32',
+'0x00','0x00','0x35','0x31',
+'0x00','0x00','0x35','0x30',
+'0x00','0x00','0x34','0x39',
+'0x00','0x00','0x34','0x38',
+'0x00','0x00','0x34','0x37',
+'0x00','0x00','0x34','0x36',
+'0x00','0x00','0x34','0x35',
+'0x00','0x00','0x34','0x34',
+'0x00','0x00','0x34','0x33',
+'0x00','0x00','0x34','0x32',
+'0x00','0x00','0x34','0x31',
+'0x00','0x00','0x34','0x30',
+'0x00','0x00','0x33','0x39',
+'0x00','0x00','0x33','0x38',
+'0x00','0x00','0x33','0x37',
+'0x00','0x00','0x33','0x36',
+'0x00','0x00','0x33','0x35',
+'0x00','0x00','0x33','0x34',
+'0x00','0x00','0x33','0x33',
+'0x00','0x00','0x33','0x32',
+'0x00','0x00','0x33','0x31',
+'0x00','0x00','0x33','0x30',
+'0x00','0x00','0x32','0x39',
+'0x00','0x00','0x32','0x38',
+'0x00','0x00','0x32','0x37',
+'0x00','0x00','0x32','0x36',
+'0x00','0x00','0x32','0x35',
+'0x00','0x00','0x32','0x34',
+'0x00','0x00','0x32','0x33',
+'0x00','0x00','0x32','0x32',
+'0x00','0x00','0x32','0x31',
+'0x00','0x00','0x32','0x30',
+'0x00','0x00','0x31','0x39',
+'0x00','0x00','0x31','0x38',
+'0x00','0x00','0x31','0x37',
+'0x00','0x00','0x31','0x36',
+'0x00','0x00','0x31','0x35',
+'0x00','0x00','0x31','0x34',
+'0x00','0x00','0x31','0x33',
+'0x00','0x00','0x31','0x32',
+'0x00','0x00','0x31','0x31',
+'0x00','0x00','0x31','0x30',
+'0x00','0x00','0x00','0x39',
+'0x00','0x00','0x00','0x38',
+'0x00','0x00','0x00','0x37',
+'0x00','0x00','0x00','0x36',
+'0x00','0x00','0x00','0x35',
+'0x00','0x00','0x00','0x34',
+'0x00','0x00','0x00','0x33',
+'0x00','0x00','0x00','0x32',
+'0x00','0x00','0x00','0x31',
+'0x00','0x00','0x00','0x00',]
 def tX(a):
     a = a.replace("X","x")
     return a
@@ -158,15 +259,18 @@ sp = 32764
 srHEXA = "0x00000000"
 pulo = bin(0)
 instrucao = ""
-terminal = ["-1"]*100
+terminal = ["-1"]*400
 listaRegisDEC = []
+sr = ['0'] * 32
 listaRegistradores = ["0x00000000"] * 32
 pc = completaZeroHexa(hex(0))
 listaRegistradores[0] = "0x00000000"
 proxIns = completaZeroHexa(binario[0])
 num1,num2,proxPC,ultimaLinha,registradorL4,variavel,en,t,ativaTerminal,ativaFPU,ativaSWI,cicloVAR,cicloCONS,contaCicloVAR,contaCicloCONS = 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-
-regisEsp = ["r0","r1","r2","r3","r4","r5","r6","r7","r8","r9","r10","r11","r12","r13","r14","r15","r16","r17","r18","r19","r20","r21","r22","r23","r24","r25","cr","ipc","ir","pc","sp","sr"]
+iN = 0
+contaTerminal = 0
+regisEsp = ["r0","r1","r2","r3","r4","r5","r6","r7","r8","r9","r10","r11","r12","r13","r14",
+"r15","r16","r17","r18","r19","r20","r21","r22","r23","r24","r25","cr","ipc","ir","pc","sp","sr"]
 
 try:
     INDEX0x80808880 = mem.index("0x20202220")
@@ -184,13 +288,16 @@ try:
     INDEX0x8080888F = mem.index("0x8080888F")
 except ValueError:
     INDEX0x8080888F = 0
+try:
+    INDEX0x8888888B = mem.index("0x8888888B")
+except:
+    INDEX0x8888888B = 0
 
 
 
 for e in range(32):
     listaRegisDEC.append(0)
 
-sr = ['0'] * 32
 
 while True:
     
@@ -1738,6 +1845,7 @@ while True:
     
                 num1 = listaRegisDEC[rX]
                 num2 = im
+
                 n1 = (completaZero(bin(num1).strip("-")[2:]))
                 n2 = (completaZero(bin(num2).strip("-")[2:]))
                 if imed[0] == "1":
@@ -2001,12 +2109,24 @@ while True:
                 registradorZ = regisEsp[rZ]
                 registradorX = regisEsp[rX]
                 i = int(imed,2)
-                
+                teste1 = (tX(hex((listaRegisDEC[rX] + i)).upper()))
+                teste2 = (tX(hex((INDEX0x8888888B)).upper()))
                 if (tX(hex((listaRegisDEC[rX] + i)).upper()) == "0x8080888F"):
                     end = "0x8080888F"
                     valor = completaZeroHexa8(mem[INDEX0x8080888F])
                     listaRegistradores[rZ] = valor
-                    
+                
+                elif (tX(hex((listaRegisDEC[rX] + i)).upper()) == "0x8888888B"): 
+                        auxTerminal = auxTerminal + (testeTerminal[r])[2:] 
+                        r+=1
+                        contaTerminal += 1
+                        if contaTerminal == 4:
+                            valor = auxTerminal
+                            listaRegistradores[rZ] = valor
+                            auxTerminal = "0x"
+                            contaTerminal = 0
+
+
                 elif ((listaRegisDEC[rX] + i)//4) != 0:
                     parte = ((listaRegisDEC[rX] + i)%4)
                     if parte == 0:
@@ -2022,7 +2142,6 @@ while True:
                     listaRegisDEC[rZ] = int(listaRegistradores[rZ],16)
                     end = tX(completaZeroHexa(hex((listaRegisDEC[rX] + i))).upper())
                     valor = completaZeroHexa8(listaRegistradores[rZ])
-
                 imprimir = f"	{instrucao} {registradorZ},[{registradorX}+{i}]           	{registradorZ.upper()}=MEM[{end}]={valor}"
                 arqOutput.write(pc+":"+imprimir+"\n")
             
@@ -2105,11 +2224,27 @@ while True:
                 teste = hex((listaRegisDEC[rX] + i))
                 if  tX(hex((listaRegisDEC[rX] + i)).upper()) == "0x8888888B":
                     end = "0x8888888B"
-                    iN = completaZeroHexa(hex((int(imed[:8],2))))
-                    out = completaZeroHexa(hex((int(imed[8:],2))))
-                    terminal[t] = listaRegistradores[rZ]
-                    terminal[t+1] = iN
-                    t = t + 1
+                    parteiN = valor
+                    terminal[t] = parteiN
+                    t += 1
+                    #out = completaZeroHexa(hex((int(imed[8:],2))))
+                    # out = listaRegistradores[rZ]
+                    # try:   
+                    #     if contaTerminal < 4:
+                    #         iN = iN + 1
+                    #         contaTerminal += 1
+                    #     else:
+                    #         terminal[t] = valor
+                    #         t = t + 1
+                    #         print(iN)
+                    #         contaTerminal = 0
+                        
+                        
+                    # except IndexError:
+                    #     t = t+1
+                    #     print(t)
+                    #     break
+                    
                 
                 elif tX(hex((listaRegisDEC[rX] + i)).upper()) == "0x8080888F":
                     ativaFPU = 1
@@ -2120,7 +2255,7 @@ while True:
                     mem[INDEX0x8080888F] = valor
                     
                 else:
-                    mem[(listaRegisDEC[rX] + i)] = listaRegistradores[rZ]
+                    mem[(listaRegisDEC[rX] + i)//4] = listaRegistradores[rZ]
                     end = tX((completaZeroHexa(hex(listaRegisDEC[rX] + i))).upper())
                     valor = completaZeroHexa8(mem[int(end,16)])               
                 imprimir = f"	{instrucao} [{registradorX}+{i}],{registradorZ}         	MEM[{end}]={registradorZ.upper()}={valor}"
@@ -2256,6 +2391,7 @@ while True:
                 proxIns = binario[sp]
                 imprimir = f"	{instrucao}                      	PC=MEM[{tX(listaRegistradores[30].upper())}]={tX(pc4.upper())}"
                 arqOutput.write(pc+":"+imprimir+"\n")
+                t = 0
             
             elif operacao == "100000":
                 listaRegistradores[28] = completaZeroHexa(hex(int(c,2)))
@@ -2474,14 +2610,6 @@ while True:
 
             
 
-            
-        
-
-
-
-
-
-
 
     if (variavel != 0) and proxIns == c:
         proxPC = int(pulo,16)
@@ -2509,22 +2637,33 @@ if ativaTerminal == 1:
     #terminal.remove("0x00000000")
     ter = 0
     teste = 0
+    comeco = 0
+    fim = 4
+    # while i < len(terminal):
+    #     string = terminal[comeco:fim]
+    #     comeco = comeco + 4
+    #     fim = fim + 4
+    #     i = i + 4
     
     for ter in terminal:
         if terminal[teste] == "-1":
             break
         else:
-            #if type(terminal[0]) == str:
-            #imprimirTerminal = imprimirTerminal + chr((int(bin(int(ter,16)),2)))
-            teste+= 1
-            #else:
-            if teste == 51:
-                imprimirTerminal = imprimirTerminal + "\n"
-            imprimirTerminal = imprimirTerminal + (str(int(bin(int(ter,16)),2))) + " "
-            #ter = ter + 4
+            barray = bytearray.fromhex(ter[2:])
+            
+            imprimirTerminal = imprimirTerminal + barray.decode()
+            
+    #         # #if type(terminal[0]) == str:
+    #         # #imprimirTerminal = imprimirTerminal + chr((int(bin(int(ter,16)),2)))
+    #         # teste+= 1
+    #         # #else:
+    #         # if teste == 201:
+    #         #     imprimirTerminal = imprimirTerminal + "\n"
+    #         # imprimirTerminal = imprimirTerminal + chr((int(bin(int(ter,16)),2))) + ""
+    #         # #ter = ter + 4
     
     arqOutput.write("[TERMINAL]\n")
-    arqOutput.write(imprimirTerminal+"\n")
+    arqOutput.write(imprimirTerminal)
     
     
 end = time.perf_counter()
