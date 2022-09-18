@@ -11,54 +11,51 @@
      	mov r8, vetor
         mov r16, 0
      	cmpi r16, 399
-        beq 5
-        l8 r17, [r1] 
+        beq 6
+        l8 r17, [r1]
         s8 [r8], r17
+        s8 [r1], r17
         addi r8,r8,1
         addi r16,r16,1
-        bun -7
+        bun -8
 		ret
      
     // Funcao ordem normal dos numeros    
-    imprimirORDEMNORMAL: 
-    	mov r20,0
-    	mov r8, vetor 
-        l8 r10, [r8]  
-        cmpi r20, 399      
-        beq 4     
-        s8 [r1], r10      
-        addi r8, r8, 1
-        addi r20,r20,1
-        bun -7     
-        ret
+    //imprimirORDEMNORMAL: 
+    	//r20 -> Iterador
+    	//mov r20,0
+    	//mov r8, vetor 
+        //l8 r10, [r8]  
+        //cmpi r20, 399      
+        //beq 4     
+        //s8 [r1], r10      
+        //addi r8, r8, 1
+        //addi r20,r20,1
+        //bun -7     
+        //ret
         
     // Funcao Bubble sort
     bbSort:
     	cmpi r3, 99
-        mov r7, vetor
         mov r8, vetor
+        beq 17
         mov r9, vetor
-        beq 20
         cmpi r4, 99
-        beq 15
+        beq 11
         l32 r10,[r8]   
 		addi r8, r8, 4 
         l32 r11,[r8] 
         cmp r10,r11
         bgt 1
-        bun 5
-       	mov r2, r10
-        mov r10, r11
-        mov r11, r2
-        s32 [r9],r10
-        s32 [r9+4],r11
+        bun 2
+        s32 [r9],r11
+        s32 [r9+4],r10
         addi r9,r9,4
         addi r4,r4,1
-        addi r7,r7,1
-        bun -17
+        bun -13
         addi r3,r3,1
         mov r4, 0
-        bun -25
+        bun -20
         ret
         
     imprimirBBSORT:
@@ -78,16 +75,15 @@
     
     	mov sp, 0x7FFC
         l32 r1, [terminal]
-        mov r2, 0
         mov r3, 0	
         mov r4, 0
         
         //leitura do IN para o TERMINAL
         call lerIN
         //ler o numeros do vetor na ordem normal
-        call imprimirORDEMNORMAL
+        //call imprimirORDEMNORMAL
         //ordena o vetor
-        call bbSort
+          call bbSort
         //ler o vetor ordenado
         call imprimirBBSORT
         
@@ -99,4 +95,4 @@
     	.4byte 0x8888888B
     vetor:
     	.fill 400
-        
+	
