@@ -12,6 +12,7 @@ from math import ceil,floor
 
 r = 0
 auxTerminal = "0x"
+ativa = 0
 arqInput = open("ordenacaoPoxim.hex.txt",'r')
 arqOutput = open("saida.out.txt",'w')
 start = time.perf_counter()
@@ -120,7 +121,8 @@ testeTerminal = [
 '0x00','0x00','0x00','0x33',
 '0x00','0x00','0x00','0x32',
 '0x00','0x00','0x00','0x31',
-'0x00','0x00','0x00','0x00',]
+'0x00','0x00','0x00','0x30',]
+
 def tX(a):
     a = a.replace("X","x")
     return a
@@ -2117,14 +2119,18 @@ while True:
                     listaRegistradores[rZ] = valor
                 
                 elif (tX(hex((listaRegisDEC[rX] + i)).upper()) == "0x8888888B"): 
-                        auxTerminal = auxTerminal + (testeTerminal[r])[2:] 
-                        r+=1
-                        contaTerminal += 1
-                        if contaTerminal == 4:
-                            valor = auxTerminal
-                            listaRegistradores[rZ] = valor
-                            auxTerminal = "0x"
-                            contaTerminal = 0
+                    end = "0x8888888B"
+                    auxTerminal = auxTerminal + (testeTerminal[r])[2:]
+                    valor = (testeTerminal[r])
+                    r+=1
+                    contaTerminal += 1
+                    if contaTerminal == 4:
+                        #valor = (listaRegistradores[rZ])
+                        valorAUX = auxTerminal
+                        ativa = 1
+                        listaRegistradores[rZ] = valorAUX
+                        auxTerminal = "0x"
+                        contaTerminal = 0
 
 
                 elif ((listaRegisDEC[rX] + i)//4) != 0:
@@ -2255,7 +2261,9 @@ while True:
                     mem[INDEX0x8080888F] = valor
                     
                 else:
-                    mem[(listaRegisDEC[rX] + i)//4] = listaRegistradores[rZ]
+                    if ativa != 0:
+                        mem[(listaRegisDEC[rX] + i)//4] = listaRegistradores[rZ]
+                        ativa = 0
                     end = tX((completaZeroHexa(hex(listaRegisDEC[rX] + i))).upper())
                     valor = completaZeroHexa8(mem[int(end,16)])               
                 imprimir = f"	{instrucao} [{registradorX}+{i}],{registradorZ}         	MEM[{end}]={registradorZ.upper()}={valor}"
@@ -2634,17 +2642,7 @@ while True:
 
 if ativaTerminal == 1:
     imprimirTerminal = ""
-    #terminal.remove("0x00000000")
-    ter = 0
     teste = 0
-    comeco = 0
-    fim = 4
-    # while i < len(terminal):
-    #     string = terminal[comeco:fim]
-    #     comeco = comeco + 4
-    #     fim = fim + 4
-    #     i = i + 4
-    
     for ter in terminal:
         if terminal[teste] == "-1":
             break
@@ -2652,7 +2650,7 @@ if ativaTerminal == 1:
             barray = bytearray.fromhex(ter[2:])
             
             imprimirTerminal = imprimirTerminal + barray.decode()
-            
+        teste += 1    
     #         # #if type(terminal[0]) == str:
     #         # #imprimirTerminal = imprimirTerminal + chr((int(bin(int(ter,16)),2)))
     #         # teste+= 1
@@ -2671,3 +2669,6 @@ print(end - start)
 arqOutput.write("\n[END OF SIMULATION]")
 arqInput.close()
 arqOutput.close()
+
+# for i in range(400):
+#     print(terminal[i])
