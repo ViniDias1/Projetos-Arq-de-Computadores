@@ -13,6 +13,7 @@ from math import ceil,floor
 r = 0
 auxTerminal = "0x"
 ativa = 0
+ativaHWI2 = 0
 arqInput = open("ordenacaoPoxim.hex.txt",'r')
 arqOutput = open("saida.out.txt",'w')
 start = time.perf_counter()
@@ -121,7 +122,7 @@ testeTerminal = [
 '0x00','0x00','0x00','0x33',
 '0x00','0x00','0x00','0x32',
 '0x00','0x00','0x00','0x31',
-'0x00','0x00','0x00','0x30',]
+'0x30','0x30','0x30','0x30']
 
 def tX(a):
     a = a.replace("X","x")
@@ -269,11 +270,17 @@ pc = completaZeroHexa(hex(0))
 listaRegistradores[0] = "0x00000000"
 proxIns = completaZeroHexa(binario[0])
 num1,num2,proxPC,ultimaLinha,registradorL4,variavel,en,t,ativaTerminal,ativaFPU,ativaSWI,cicloVAR,cicloCONS,contaCicloVAR,contaCicloCONS = 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-iN = 0
+iN,expoente1,expoente2 = 0,0,0
 contaTerminal = 0
 regisEsp = ["r0","r1","r2","r3","r4","r5","r6","r7","r8","r9","r10","r11","r12","r13","r14",
 "r15","r16","r17","r18","r19","r20","r21","r22","r23","r24","r25","cr","ipc","ir","pc","sp","sr"]
 
+
+
+try:
+    INDEX0x80808080 = mem.index("0x20202020")
+except:
+    INDEX0x80808080 = 0
 try:
     INDEX0x80808880 = mem.index("0x20202220")
 except ValueError:
@@ -304,10 +311,8 @@ for e in range(32):
 while True:
     
     c = proxIns
-
+    pc=tX(completaZeroHexa(hex(proxPC)).upper())
     if (c.rfind("1") != -1):
-        
-        pc=tX(completaZeroHexa(hex(proxPC)).upper())
         
         zn,zd,sn,ov,iv,cy = '0','0','0','0','0','0'
         if (c[2:4] == "00") and (c[:2] != "0x"): 
@@ -1668,13 +1673,13 @@ while True:
                 listaRegistradores[29] = pc
                 listaRegisDEC[29] = int(pc,16)
                 instrucao = "call"
-                variavel = int(completaZeroBin(complementa2(imed)),2)
+                variavel = int(imed,2)
                 if imed[0] == "1":
-                    variavel = variavel * -1
+                    variavel = int(complementa2(completaZeroBin(imed)),2)*-1
 
                 pc4 = tX(completaZeroHexa(hex(proxPC+4)).upper())
                 binario[sp] = binario[((proxPC+4)//4)]
-                mem[sp] = completaZeroHexa(hex(int(binario[sp],2)))
+                mem[sp] = pc4#completaZeroHexa(hex(int(pc4,2)))
                 
                 pulo = completaZeroHexa(hex(((variavel*4)+proxPC)+4))
                 
@@ -2227,7 +2232,6 @@ while True:
                 registradorZ = regisEsp[rZ]
                 registradorX = regisEsp[rX]
                 i = int(imed,2)
-                teste = hex((listaRegisDEC[rX] + i))
                 if  tX(hex((listaRegisDEC[rX] + i)).upper()) == "0x8888888B":
                     end = "0x8888888B"
                     parteiN = valor
@@ -2259,13 +2263,13 @@ while True:
                     st = completaZero(bin(int(valor,16))[2:])[27]
                     opFPU = completaZero(bin(int(valor,16))[2:])[27:]
                     mem[INDEX0x8080888F] = valor
+                    #z = int(valor,16)
                     
                 else:
                     if ativa != 0:
                         mem[(listaRegisDEC[rX] + i)//4] = listaRegistradores[rZ]
                         ativa = 0
-                    end = tX((completaZeroHexa(hex(listaRegisDEC[rX] + i))).upper())
-                    valor = completaZeroHexa8(mem[int(end,16)])               
+                    end = tX((completaZeroHexa(hex(listaRegisDEC[rX] + i))).upper())          
                 imprimir = f"	{instrucao} [{registradorX}+{i}],{registradorZ}         	MEM[{end}]={registradorZ.upper()}={valor}"
                 arqOutput.write(pc+":"+imprimir+"\n")
                 
@@ -2298,6 +2302,7 @@ while True:
                 registradorZ = regisEsp[rZ]
                 registradorX = regisEsp[rX]
                 i = int(imed,2)
+                teste = tX(hex((listaRegisDEC[rX] + i)<<2).upper())
                 if  tX(hex((listaRegisDEC[rX] + i)).upper()) == "0x8888888B":
                     end = "0x8888888B"
                     iN = completaZeroHexa(hex((int(imed[:8],2))))
@@ -2307,40 +2312,40 @@ while True:
                     #terminal[t+1] = iN
                     t = t + 1
 
-                elif hex((listaRegisDEC[rX] + i)<<2) == "0x80808080":
+                elif tX(hex((listaRegisDEC[rX] + i)<<2).upper()) == "0x80808080":
                     en = bin(int((listaRegistradores[rZ]),16))[2]
                     counter = int((listaRegistradores[rZ])[3:],16)
                     end = "0x80808080"
                     valor = listaRegistradores[rZ]
-                    mem[mem.index("0x80808080")] = valor
+                    mem[INDEX0x80808080] = valor
 
-                elif hex((listaRegisDEC[rX] + i)<<2) == "0x80808880":
+                elif tX(hex((listaRegisDEC[rX] + i)<<2).upper()) == "0x80808880":
                     end = "0x80808880"
                     valor = listaRegistradores[rZ]
                     X = int(valor,16)
                     auxX = int(floatHEX(X),16)
                     expoente1 = (int(completaZero(bin(auxX)[2:])[1:9],2)) - 127
-                    if expoente1 <= -127:
+                    if expoente1 < -127:
                         expoente1 = 0
                     mem[INDEX0x80808880] = valor
 
-                elif hex((listaRegisDEC[rX] + i)<<2) == "0x80808884":
+                elif tX(hex((listaRegisDEC[rX] + i)<<2).upper()) == "0x80808884":
                     end = "0x80808884"
                     valor = listaRegistradores[rZ]
                     Y = int(valor,16)
                     auxY = int(floatHEX(Y),16)
                     expoente2 = (int(completaZero(bin(auxY)[2:])[1:9],2)) - 127
-                    if expoente2 <= -127:
+                    if expoente2 < -127:
                         expoente2 = 0
                     mem[INDEX0x80808884] = valor
 
-                elif hex((listaRegisDEC[rX] + i)<<2) == "0x80808888":
+                elif tX(hex((listaRegisDEC[rX] + i)<<2).upper()) == "0x80808888":
                     end = "0x80808888"
                     valor = listaRegistradores[rZ]
                     
                     mem[INDEX0x80808888] = valor
                 
-                elif hex((listaRegisDEC[rX] + i)<<2) == "0x8080888F":
+                elif tX(hex((listaRegisDEC[rX] + i)<<2).upper()) == "0x8080888F":
                     ativaFPU = 1
                     end = "0x8080888F"
                     valor = listaRegistradores[rZ]
@@ -2394,7 +2399,7 @@ while True:
                 sp= sp + 4
                 listaRegistradores[30] = completaZeroHexa(hex(sp))
                 listaRegisDEC[30] = sp
-                pulo = pc4
+                pulo = mem[sp]
                 proxPC = int(pulo,16) 
                 proxIns = binario[sp]
                 imprimir = f"	{instrucao}                      	PC=MEM[{tX(listaRegistradores[30].upper())}]={tX(pc4.upper())}"
@@ -2449,54 +2454,36 @@ while True:
             sp = sp - 4
             mem[sp] = listaRegistradores[27]
             sp = sp - 4
-
+    # else:
+    #     imprimir = "	mov r0,0                 	R0=0x00000000"
+    #     arqOutput.write(pc+":"+imprimir+"\n")    
 
     #--------Rotina WatchDog--------#
-        if en == "1":
-            counter = counter - 1
-            if counter == -1:
-                pc4 = tX(completaZeroHexa(hex(proxPC+4)).upper())
-                mem[sp] = pc4
-                sp = sp - 4
-                mem[sp] = "0xE1AC04DA"
-                sp = sp - 4
-                mem[sp] = pc
-                listaRegistradores[26] = "0xE1AC04DA"
-                listaRegistradores[27] = pc
-                listaRegisDEC[26] = int("0xE1AC04DA",16)
-                listaRegisDEC[27] = int(pc,16)
-                
-                en = "0"
-                proxIns = binario[4]
-
-                pulo = "0x00000010"
-                arqOutput.write("[HARDWARE INTERRUPTION 1]\n")
-    #--------Rotina WatchDog--------# 
-
-    #--------Rotina FPU--------# 
-        
-        if cicloVAR != 0:
-            contaCicloVAR = contaCicloVAR + 1
-            if contaCicloVAR == cicloVAR:
-                pc4ISR = tX(completaZeroHexa(hex(int(pulo,16))).upper())
-                mem[sp] = pc4ISR
-                sp = sp - 4
-                mem[sp] =  listaRegistradores[26]
-                listaRegistradores[26] = "0x01EEE754"
-                listaRegisDEC[26] = int("0x01EEE754",16)
-                sp = sp - 4
-                mem[sp] = listaRegistradores[27]
-                listaRegistradores[27] = tX(completaZeroHexa(hex(proxPC)).upper())
-                listaRegisDEC[27] = int(listaRegistradores[27],16)
-                sp = sp - 4
-                pulo = "0x00000018"
-                proxIns = binario[6]
-                arqOutput.write("[HARDWARE INTERRUPTION 3]\n")
-                contaCicloVAR = 0
-                cicloVAR = 0
-                ativaFPU = 0
-        elif cicloCONS != 0:
+    if en == "1":
+        counter = counter - 1
+        if counter == -1:
+            pc4 = tX(completaZeroHexa(hex(proxPC+4)).upper())
+            mem[sp] = pc4
+            sp = sp - 4
+            mem[sp] = "0xE1AC04DA"
+            sp = sp - 4
+            mem[sp] = pc
+            listaRegistradores[26] = "0xE1AC04DA"
+            listaRegistradores[27] = pc
+            listaRegisDEC[26] = int("0xE1AC04DA",16)
+            listaRegisDEC[27] = int(pc,16)
             
+            en = "0"
+            proxIns = binario[4]
+
+            pulo = "0x00000010"
+            arqOutput.write("[HARDWARE INTERRUPTION 1]\n")
+#--------Rotina WatchDog--------# 
+
+#--------Rotina FPU--------# 
+    if ativaHWI2 != 0:
+        contaCicloVAR = contaCicloVAR + 1
+        if contaCicloVAR == cicloVAR:
             pc4ISR = tX(completaZeroHexa(hex(int(pulo,16))).upper())
             mem[sp] = pc4ISR
             sp = sp - 4
@@ -2508,116 +2495,166 @@ while True:
             listaRegistradores[27] = tX(completaZeroHexa(hex(proxPC)).upper())
             listaRegisDEC[27] = int(listaRegistradores[27],16)
             sp = sp - 4
-            pulo = "0x0000001C"
-            proxIns = binario[7]
-            arqOutput.write("[HARDWARE INTERRUPTION 4]\n")
-            contaCicloCONS = 0
-            cicloCONS = 0
+            pulo = "0x00000014"
+            proxIns = binario[5]
+            arqOutput.write("[HARDWARE INTERRUPTION 2]\n")
+            contaCicloVAR = 0
+            cicloVAR = 0
+            ativaHWI2 = 0
             ativaFPU = 0
 
 
-        if ativaFPU == 1:
-            if opFPU == "00000":
-                #Sem operacao
-                abrpb = 0
-            elif opFPU == "00001":
-                #Adicao
+    elif cicloVAR != 0:
+        contaCicloVAR = contaCicloVAR + 1
+        if contaCicloVAR == cicloVAR:
+            pc4ISR = tX(completaZeroHexa(hex(int(pulo,16))).upper())
+            mem[sp] = pc4ISR
+            sp = sp - 4
+            mem[sp] =  listaRegistradores[26]
+            listaRegistradores[26] = "0x01EEE754"
+            listaRegisDEC[26] = int("0x01EEE754",16)
+            sp = sp - 4
+            mem[sp] = listaRegistradores[27]
+            listaRegistradores[27] = tX(completaZeroHexa(hex(proxPC)).upper())
+            listaRegisDEC[27] = int(listaRegistradores[27],16)
+            sp = sp - 4
+            pulo = "0x00000018"
+            proxIns = binario[6]
+            arqOutput.write("[HARDWARE INTERRUPTION 3]\n")
+            contaCicloVAR = 0
+            cicloVAR = 0
+            ativaFPU = 0
+
+    elif cicloCONS != 0:
+        
+        pc4ISR = tX(completaZeroHexa(hex(int(pulo,16))).upper())
+        mem[sp] = pc4ISR
+        sp = sp - 4
+        mem[sp] =  listaRegistradores[26]
+        listaRegistradores[26] = "0x01EEE754"
+        listaRegisDEC[26] = int("0x01EEE754",16)
+        sp = sp - 4
+        mem[sp] = listaRegistradores[27]
+        listaRegistradores[27] = tX(completaZeroHexa(hex(proxPC)).upper())
+        listaRegisDEC[27] = int(listaRegistradores[27],16)
+        sp = sp - 4
+        pulo = "0x0000001C"
+        proxIns = binario[7]
+        arqOutput.write("[HARDWARE INTERRUPTION 4]\n")
+        contaCicloCONS = 0
+        cicloCONS = 0
+        ativaFPU = 0
+
+        
+
+
+    if ativaFPU == 1:
+        if opFPU == "00000":
+            #Sem operacao
+            abrpb = 0
+        elif opFPU == "00001":
+            #Adicao
+            try:
                 z = float(X + Y)
                 mem[INDEX0x80808888] = tX(floatHEX(z).upper())
                 mem[INDEX0x8080888F] = '0x00000000'
-
                 cicloVAR = abs(expoente1 - expoente2) + 1
                 st = "0"
                 opFPU = "00000"
-            elif opFPU == "00010":
-                #Subtracao
-                z = float(X - Y)
+            except:
+                cicloVAR = abs(expoente1 - expoente2) + 1
+
+        elif opFPU == "00010":
+            #Subtracao
+            z = float(X - Y)
+            mem[INDEX0x80808888] = tX(floatHEX(z).upper())
+            mem[INDEX0x8080888F] = '0x00000000'
+            cicloVAR = abs(expoente1 - expoente2) + 1
+            st = "0"
+            opFPU = "00000"
+        elif opFPU == "00011":
+            #Multiplicao
+            z = float(X * Y)
+            mem[INDEX0x80808888] = tX(floatHEX(z).upper())
+            mem[INDEX0x8080888F] = '0x00000000'
+            cicloVAR = abs(expoente1 - expoente2) + 1
+            st = "0"
+            opFPU = "00000"
+        elif opFPU == "00100":
+            try:
+                z = float(X / Y)
                 mem[INDEX0x80808888] = tX(floatHEX(z).upper())
                 mem[INDEX0x8080888F] = '0x00000000'
-                cicloVAR = abs(expoente1 - expoente2) + 1
                 st = "0"
                 opFPU = "00000"
-            elif opFPU == "00011":
-                #Multiplicao
-                z = float(X * Y)
-                mem[INDEX0x80808888] = tX(floatHEX(z).upper())
-                mem[INDEX0x8080888F] = '0x00000000'
-                cicloVAR = abs(expoente1 - expoente2) + 1
-                st = "0"
-                opFPU = "00000"
-            elif opFPU == "00100":
-                try:
-                    z = float(X / Y)
-                    mem[INDEX0x80808888] = tX(floatHEX(z).upper())
-                    mem[INDEX0x8080888F] = '0x00000000'
-                    cicloVAR = abs(expoente1 - expoente2) + 1
-                    st = "0"
-                    opFPU = "00000"
-                except ZeroDivisionError:
-                    ativaFPU = 1
-                    cicloVAR = abs(expoente1 - expoente2) + 1
+            except ZeroDivisionError:
+                ativaFPU = 1
+                ativaHWI2 = 1
+            cicloVAR = abs(expoente1 - expoente2) + 1
+            # divisao por ZERO
+            
+        elif opFPU == "00101":
+            #Atribuicao10000000
+            X = z
+            mem[INDEX0x80808880] = mem[INDEX0x80808888]
+            expoente1 = int(completaZero(bin(int(mem[INDEX0x80808880],16))[2:])[1:9],2) - 127
+            if expoente1 <= -127:
+                expoente1 = 0
+            mem[INDEX0x8080888F] = '0x00000000'
+            cicloCONS = 1
+            st = "0"
+            opFPU = "00000"
+        elif opFPU == "00110":
+            #Atribuicao
+            Y = z
+            mem[INDEX0x80808884] = mem[INDEX0x80808888]
+            mem[INDEX0x8080888F] = '0x00000000'
+            expoente2 = int(completaZero(bin(int(mem[INDEX0x80808884],16))[2:])[1:9],2) - 127
+            if expoente2 <= -127:
+                expoente2 = 0
+            cicloCONS = 1
+            st = "0"
+            opFPU = "00000"
+        elif opFPU == "00111":
+            #Teto
+            z = ceil(z)
+            mem[INDEX0x80808888] = tX(floatHEX(z).upper())
+            mem[INDEX0x8080888F] = '0x00000000'
+            cicloCONS = 1
+            st = "0"
+            opFPU = "00000"
 
-                # divisao por ZERO
-                
-            elif opFPU == "00101":
-                #Atribuicao10000000
-                X = z
-                mem[INDEX0x80808880] = mem[INDEX0x80808888]
-                expoente1 = int(completaZero(bin(int(mem[INDEX0x80808880],16))[2:])[1:9],2) - 127
-                if expoente1 <= -127:
-                    expoente1 = 0
-                mem[INDEX0x8080888F] = '0x00000000'
-                cicloCONS = 1
-                st = "0"
-                opFPU = "00000"
-            elif opFPU == "00110":
-                #Atribuicao
-                Y = z
-                mem[INDEX0x80808884] = mem[INDEX0x80808888]
-                mem[INDEX0x8080888F] = '0x00000000'
-                expoente2 = int(completaZero(bin(int(mem[INDEX0x80808884],16))[2:])[1:9],2) - 127
-                if expoente2 <= -127:
-                    expoente2 = 0
-                cicloCONS = 1
-                st = "0"
-                opFPU = "00000"
-            elif opFPU == "00111":
-                #Teto
-                z = ceil(z)
-                mem[INDEX0x80808888] = completaZeroHexa(hex(z))
-                mem[INDEX0x8080888F] = '0x00000000'
-                cicloCONS = 1
-                st = "0"
-                opFPU = "00000"
-
-            elif opFPU == "01000":
-                #Piso
-                z = floor(z)
-                mem[INDEX0x80808888] = completaZeroHexa(hex(z))
-                mem[INDEX0x8080888F] = '0x00000000'
-                cicloCONS = 1
-                st = "0"
-                opFPU = "00000"
-            elif opFPU == "01001":
-                #Arredondamento
+        elif opFPU == "01000":
+            #Piso
+            z = floor(z)
+            mem[INDEX0x80808888] = tX(floatHEX(z).upper())
+            mem[INDEX0x8080888F] = '0x00000000'
+            cicloCONS = 1
+            st = "0"
+            opFPU = "00000"
+        elif opFPU == "01001":
+            #Arredondamento
+            try:
                 z = round(z)
-                mem[INDEX0x80808888] = completaZeroHexa(hex(z))
+                mem[INDEX0x80808888] = tX(floatHEX(z).upper())
                 mem[INDEX0x8080888F] = '0x00000000'
                 cicloCONS = 1
                 st = "0"
                 opFPU = "00000"
-        
-    #--------Rotina FPU--------# 
+            except:
+                cicloCONS = 1   
+        else:
+            ativaFPU = 1
+            ativaHWI2 = 1
+            cicloVAR = 1
 
-    #--------SOFTWARE INTERRUPTION--------# 
+#--------Rotina FPU--------# 
+
+#--------SOFTWARE INTERRUPTION--------# 
 
     if ativaSWI == 1:
-        
         arqOutput.write("[SOFTWARE INTERRUPTION]\n")
         ativaSWI = 0
-
-            
-
 
     if (variavel != 0) and proxIns == c:
         proxPC = int(pulo,16)
