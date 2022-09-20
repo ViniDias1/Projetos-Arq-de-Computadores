@@ -20,50 +20,40 @@
         bun -8
 		ret
      
-    // Funcao ordem normal dos numeros    
-    //imprimirORDEMNORMAL: 
-    	//r20 -> Iterador
-    	//mov r20,0
-    	//mov r8, vetor 
-        //l8 r10, [r8]  
-        //cmpi r20, 399      
-        //beq 4     
-        //s8 [r1], r10      
-        //addi r8, r8, 1
-        //addi r20,r20,1
-        //bun -7     
-        //ret
-        
     // Funcao Bubble sort
     bbSort:
-    	cmpi r3, 99
+        cmpi r3, 99
+        mov r2,0
         mov r8, vetor
-        beq 17
+        beq 20
         mov r9, vetor
+        //FOR INTERNO
         cmpi r4, 99
-        beq 11
+        beq 12
         l32 r10,[r8]   
 		addi r8, r8, 4 
         l32 r11,[r8] 
         cmp r10,r11
         bgt 1
-        bun 2
+        bun 3
         s32 [r9],r11
         s32 [r9+4],r10
+        mov r2,1
         addi r9,r9,4
         addi r4,r4,1
-        bun -13
+        bun -14
+        cmpi r2, 0
+        beq 3
         addi r3,r3,1
         mov r4, 0
-        bun -20
+        bun -24
         ret
         
     imprimirBBSORT:
     	mov r20,0
-    	//mov r8, vetor 
+        cmpi r20, 400 
+        beq 5 
         l8 r10, [r8]  
-        cmpi r20, 399      
-        beq 4     
         s8 [r1], r10      
         addi r8, r8, 1
         addi r20,r20,1
@@ -80,13 +70,9 @@
         
         //leitura do IN para o TERMINAL
         call lerIN
-        //ler o numeros do vetor na ordem normal
-        //call imprimirORDEMNORMAL
         //ordena o vetor
-          call bbSort
-        //ler o vetor ordenado
+        call bbSort
         call imprimirBBSORT
-        
 		// Finalização da execução
 		int 0
 
@@ -95,4 +81,4 @@
     	.4byte 0x8888888B
     vetor:
     	.fill 400
-	
+        
