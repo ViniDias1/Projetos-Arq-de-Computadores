@@ -5,19 +5,41 @@
 		bun main
 		.align 5
         
+	toString:
+    	mov r24, 0
+        mov r8, vetor
+        cmpi r24, 100
+        beq 14
+        l32 r21, [r8]
+        //comeco do loop
+        div r22,r23,r21,r10
+        mov r21,r23
+        cmpi r23,0
+        beq 5
+        addi r22,r22,48
+        addi r23,r23,48
+        s8 [r1],r23
+        s8 [r1],r22
+        bun -9
+        s8 [r1],r22
+        addi r8,r8,4
+        addi r24,r24,1
+        bun -16
+        //volta pro loop
+        ret
+        
      lerIN:
      	// r16 -> Iterador
 		// r17 -> IN
      	mov r8, vetor
         mov r16, 0
-     	cmpi r16, 399
-        beq 6
+     	cmpi r16, 400
+        beq 5
         l8 r17, [r1]
         s8 [r8], r17
-        s8 [r1], r17
         addi r8,r8,1
         addi r16,r16,1
-        bun -8
+        bun -7
 		ret
      
     // Funcao Bubble sort
@@ -49,16 +71,16 @@
         bun -24
         ret
         
-    imprimirBBSORT:
-    	mov r20,0
-        cmpi r20, 400 
-        beq 5 
-        l8 r10, [r8]  
-        s8 [r1], r10      
-        addi r8, r8, 1
-        addi r20,r20,1
-        bun -7     
-        ret
+    //imprimirBBSORT:
+    	//mov r20,0
+        //cmpi r20, 400 
+        //beq 5 
+        //l8 r10, [r8]  
+        //s8 [r1], r10      
+        //addi r8, r8, 1
+        //addi r20,r20,1
+        //bun -7     
+        //ret
    
 	// Função principal
 	main:
@@ -71,8 +93,11 @@
         //leitura do IN para o TERMINAL
         call lerIN
         //ordena o vetor
+        mov r10,10
+        call toString
         call bbSort
-        call imprimirBBSORT
+        mov r10,10
+        call toString
 		// Finalização da execução
 		int 0
 
@@ -80,5 +105,4 @@
     terminal:
     	.4byte 0x8888888B
     vetor:
-    	.fill 400
-        
+    	.fill 400	
