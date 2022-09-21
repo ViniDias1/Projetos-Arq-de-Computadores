@@ -22,7 +22,7 @@
         s8 [r1],r22
         bun -9
         s8 [r1],r22
-        addi r8,r8,4
+        addi r8,r8,1
         addi r24,r24,1
         bun -16
         //volta pro loop
@@ -53,7 +53,7 @@
         cmpi r4, 99
         beq 12
         l32 r10,[r8]   
-		addi r8, r8, 4 
+		addi r8, r8, 1
         l32 r11,[r8] 
         cmp r10,r11
         bgt 1
@@ -61,7 +61,7 @@
         s32 [r9],r11
         s32 [r9+4],r10
         mov r2,1
-        addi r9,r9,4
+        addi r9,r9,1
         addi r4,r4,1
         bun -14
         cmpi r2, 0
@@ -96,7 +96,6 @@
         mov r10,10
         call toString
         call bbSort
-        mov r10,10
         call toString
 		// Finalização da execução
 		int 0
