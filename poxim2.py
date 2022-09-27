@@ -1,8 +1,4 @@
-'''
-Nome: Vinicius Dias Valenca
-Matricula: 202100045850
 
-'''
 import sys
 import time
 import ctypes
@@ -22,7 +18,7 @@ aux = 0
 binario = [("0b00000000000000000000000000000000")]*(32765)
 mem = ([("0x00000000")]*(32765))
 i = 0
-
+testeTerminal = ["0x00","0x32"]
 
 def tX(a):
     a = a.replace("X","x")
@@ -120,13 +116,13 @@ def complementa2(str):
         if (str[i] == '1'):
             break
         i -= 1
- 
+
     if (i == -1):
         return '1'+str
- 
+
     k = i - 1
     while(k >= 0):
-         
+        
         if (str[k] == '1'):
             str = list(str)
             str[k] = '0'
@@ -136,7 +132,7 @@ def complementa2(str):
             str[k] = '1'
             str = ''.join(str)
         k -= 1
- 
+
     return str
 def floatHEX(f):
     return hex(struct.unpack('<I', struct.pack('<f', f))[0])
@@ -169,7 +165,7 @@ for codigoHexa in arqInput:
                 break
     i = i + 1
 
-                               
+                            
 arqOutput.write("[START OF SIMULATION]\n")
 sp = 32764
 srHEXA = "0x00000000"
@@ -183,6 +179,7 @@ pc = completaZeroHexa(hex(0))
 listaRegistradores[0] = "0x00000000"
 proxIns = completaZeroHexa(binario[0])
 num1,num2,proxPC,ultimaLinha,registradorL4,variavel,en,t,ativaTerminal,ativaFPU,ativaSWI,cicloVAR,cicloCONS,contaCicloVAR,contaCicloCONS = 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+#X,Y=0,0
 iN,expoente1,expoente2 = 0,0,0
 contaTerminal = 0
 regisEsp = ["r0","r1","r2","r3","r4","r5","r6","r7","r8","r9","r10","r11","r12","r13","r14",
@@ -1303,9 +1300,9 @@ while True:
                         rI = int(i)
                         registradorI = regisEsp[i]
                         listaRegistradores[i] = mem[sp] 
+                        listaRegisDEC[i] = int(listaRegistradores[i],16)
                         resulpop[cont] = tX((mem[sp]).upper())
                         valor = listaRegistradores[i]
-                        
                         end = completaZeroHexa(hex(int(completaZeroBin((bin(sp)[2:])),2)))
                         cont = cont + 1
                     else:
@@ -1398,7 +1395,7 @@ while True:
                     pulo = completaZeroHexa(hex((proxPC)+(variavel<<2)))
                 else:
                     pulo = completaZeroHexa(hex(proxPC))
-                 
+                
                 imprimir = f"	{instrucao} {variavel}                    	PC={tX(completaZeroHexa(hex(int(pulo,16))).upper())}"
                 arqOutput.write(pc+":"+imprimir+"\n")
 
@@ -1415,7 +1412,7 @@ while True:
                     pulo = completaZeroHexa(hex((proxPC)+(variavel<<2)))
                 else:
                     pulo = completaZeroHexa(hex(proxPC))
-             
+            
                 imprimir = f"	{instrucao} {variavel}                    	PC={tX(completaZeroHexa(hex(int(pulo,16))).upper())}"
                 arqOutput.write(pc+":"+imprimir+"\n")
             
@@ -1432,7 +1429,7 @@ while True:
                     pulo = completaZeroHexa(hex((proxPC)+(variavel<<2)))
                 else:
                     pulo = completaZeroHexa(hex(proxPC))
-                 
+                
                 imprimir = f"	{instrucao} {variavel}                    	PC={tX(completaZeroHexa(hex(int(pulo,16))).upper())}"
                 arqOutput.write(pc+":"+imprimir+"\n")
             
@@ -1467,7 +1464,7 @@ while True:
                     pulo = completaZeroHexa(hex((proxPC)+(variavel<<2)))
                 else:
                     pulo = completaZeroHexa(hex(proxPC))
-                 
+                
                 imprimir = f"	{instrucao} {variavel}                    	PC={tX(completaZeroHexa(hex(int(pulo,16))).upper())}"
                 arqOutput.write(pc+":"+imprimir+"\n")
             
@@ -1484,7 +1481,7 @@ while True:
                     pulo = completaZeroHexa(hex((proxPC)+(variavel<<2)))
                 else:
                     pulo = completaZeroHexa(hex(proxPC))
-                 
+                
                 imprimir = f"	{instrucao} {variavel}                    	PC={tX(completaZeroHexa(hex(int(pulo,16))).upper())}"
                 arqOutput.write(pc+":"+imprimir+"\n")
 
@@ -1501,7 +1498,7 @@ while True:
                     pulo = completaZeroHexa(hex((proxPC)+(variavel<<2)))
                 else:
                     pulo = completaZeroHexa(hex(proxPC))
-                 
+                
                 imprimir = f"	{instrucao} {variavel}                    	PC={tX(completaZeroHexa(hex(int(pulo,16))).upper())}"
                 arqOutput.write(pc+":"+imprimir+"\n")
 
@@ -1518,7 +1515,7 @@ while True:
                     pulo = completaZeroHexa(hex((proxPC)+(variavel<<2)))
                 else:
                     pulo = completaZeroHexa(hex(proxPC))
-                 
+                
                 imprimir = f"	{instrucao} {variavel}                    	PC={tX(completaZeroHexa(hex(int(pulo,16))).upper())}"
                 arqOutput.write(pc+":"+imprimir+"\n")
             
@@ -1538,7 +1535,7 @@ while True:
                 
                 imprimir = f"	{instrucao} {variavel}                   	PC={tX(completaZeroHexa(hex(int(pulo,16))).upper())}"
                 arqOutput.write(pc+":"+imprimir+"\n")
-             
+            
             elif operacao == "110101":
                 listaRegistradores[28] = completaZeroHexa(hex(int(c,2)))
                 listaRegisDEC[28] = int(c,2)
@@ -1552,7 +1549,7 @@ while True:
                     pulo = completaZeroHexa(hex((proxPC)+(variavel<<2)))
                 else:
                     pulo = completaZeroHexa(hex(proxPC))
-                 
+                
                 imprimir = f"	{instrucao} {variavel}                    	PC={tX(completaZeroHexa(hex(int(pulo,16))).upper())}"
                 arqOutput.write(pc+":"+imprimir+"\n")
 
@@ -1877,7 +1874,7 @@ while True:
                     sr[25] = zn
                 else:
                     sr[25] = "0"
-               
+            
                 srHEXA = tX(completaZeroHexa(hex(int("0b"+"".join(sr),2))).upper())
                 listaRegistradores[31] = srHEXA
                 imprimir = f"	{instrucao} {registradorZ},{registradorX},{im}         	{registradorZ.upper()}={registradorX.upper()}*{tX(completaZeroHexa(hex(int(n2,2))).upper())}={tX(variavelHexa.upper())}, SR={srHEXA}"
@@ -2060,9 +2057,9 @@ while True:
                 registradorZ = regisEsp[rZ]
                 registradorX = regisEsp[rX]
                 i = int(imed,2)
-                if (tX(hex((listaRegisDEC[rX] + i)).upper()) == "0x8080888F"):
-                    end = "0x8080888F"
-                    valor = completaZeroHexa8(mem[INDEX0x8080888F])
+                if (tX(hex((listaRegisDEC[rX] + i)).upper()) == "0x8080888C"):
+                    end = "0x8080888C"
+                    valor = completaZeroHexa8(mem[INDEX0x8080888C])
                     listaRegistradores[rZ] = valor
                 
                 elif (tX(hex((listaRegisDEC[rX] + i)).upper()) == "0x8888888B"): 
@@ -2136,6 +2133,7 @@ while True:
                 registradorX = regisEsp[rX]
                 i = int(imed,2)
                 teste = hex((listaRegisDEC[rX] + i)<<2)
+                teste2 = hex((listaRegisDEC[rX] + i))
                 if (hex((listaRegisDEC[rX] + i)<<2) == "0x80808880"):
                     end = "0x80808880"
                     listaRegistradores[rZ] = mem[INDEX0x80808880]
@@ -2159,12 +2157,7 @@ while True:
                         end = tX(completaZeroHexa(hex((listaRegisDEC[rX] + i)<<2)).upper())
                         valor = (listaRegistradores[rZ])  
                     else:
-                        try:
-                            listaRegistradores[rZ] = mem[((listaRegisDEC[rX]+i))//4]
-                        except IndexError:
-                            terminalIMPRESSAO()
-                            break
-
+                        listaRegistradores[rZ] = mem[((listaRegisDEC[rX]+i))//4]
                         listaRegisDEC[rZ] = int(listaRegistradores[rZ],16)
                         end = tX(completaZeroHexa(hex((listaRegisDEC[rX] + i))).upper())
                         valor = (listaRegistradores[rZ])
@@ -2190,15 +2183,15 @@ while True:
                     parteiN = valor
                     terminal[t] = listaRegistradores[rZ]
                     t += 1
-                  
                 
-                elif tX(hex((listaRegisDEC[rX] + i)).upper()) == "0x8080888F":
+                
+                elif tX(hex((listaRegisDEC[rX] + i)).upper()) == "0x8080888C":
                     ativaFPU = 1
-                    end = "0x8080888F"
+                    end = "0x8080888C"
                     valor = completaZeroHexa8(listaRegistradores[rZ])
                     st = completaZero(bin(int(valor,16))[2:])[27]
                     opFPU = completaZero(bin(int(valor,16))[2:])[27:]
-                    mem[INDEX0x8080888F] = valor
+                    mem[INDEX0x8080888C] = valor
                     
                     
                 else:
@@ -2425,7 +2418,7 @@ while True:
         
         else:
             sr[29] = "1"
-           # listaRegistradores[26] = completaZero(bin(int(listaRegistradores[28],16)))[:7]
+        # listaRegistradores[26] = completaZero(bin(int(listaRegistradores[28],16)))[:7]
         #listaRegistradores[27] = pc
             pc4 = tX(completaZeroHexa(hex(proxPC+4)).upper())
             mem[sp] = pc4
@@ -2441,7 +2434,7 @@ while True:
             proxIns = binario[1]
             arqOutput.write(f"[INVALID INSTRUCTION @ {pc}]\n[SOFTWARE INTERRUPTION]\n")
             
-       
+    
 
     #--------Rotina WatchDog--------#
     if en == "1":
@@ -2543,7 +2536,7 @@ while True:
             try:
                 z = float(X + Y)
                 mem[INDEX0x80808888] = tX(floatHEX(z).upper())
-                mem[INDEX0x8080888F] = '0x00000000'
+                mem[INDEX0x8080888C] = '0x00000000'
                 cicloVAR = abs(expoente1 - expoente2) + 1
                 st = "0"
                 opFPU = "00000"
@@ -2554,7 +2547,7 @@ while True:
             #Subtracao
             z = float(X - Y)
             mem[INDEX0x80808888] = tX(floatHEX(z).upper())
-            mem[INDEX0x8080888F] = '0x00000000'
+            mem[INDEX0x8080888C] = '0x00000000'
             cicloVAR = abs(expoente1 - expoente2) + 1
             st = "0"
             opFPU = "00000"
@@ -2562,7 +2555,7 @@ while True:
             #Multiplicao
             z = float(X * Y)
             mem[INDEX0x80808888] = tX(floatHEX(z).upper())
-            mem[INDEX0x8080888F] = '0x00000000'
+            mem[INDEX0x8080888C] = '0x00000000'
             cicloVAR = abs(expoente1 - expoente2) + 1
             st = "0"
             opFPU = "00000"
@@ -2570,7 +2563,7 @@ while True:
             try:
                 z = float(X / Y)
                 mem[INDEX0x80808888] = tX(floatHEX(z).upper())
-                mem[INDEX0x8080888F] = '0x00000000'
+                mem[INDEX0x8080888C] = '0x00000000'
                 st = "0"
                 opFPU = "00000"
             except ZeroDivisionError:
@@ -2586,7 +2579,7 @@ while True:
             expoente1 = int(completaZero(bin(int(mem[INDEX0x80808880],16))[2:])[1:9],2) - 127
             if expoente1 <= -127:
                 expoente1 = 0
-            mem[INDEX0x8080888F] = '0x00000000'
+            mem[INDEX0x8080888C] = '0x00000000'
             cicloCONS = 1
             st = "0"
             opFPU = "00000"
@@ -2594,7 +2587,7 @@ while True:
             #Atribuicao
             Y = z
             mem[INDEX0x80808884] = mem[INDEX0x80808888]
-            mem[INDEX0x8080888F] = '0x00000000'
+            mem[INDEX0x8080888C] = '0x00000000'
             expoente2 = int(completaZero(bin(int(mem[INDEX0x80808884],16))[2:])[1:9],2) - 127
             if expoente2 <= -127:
                 expoente2 = 0
@@ -2605,7 +2598,7 @@ while True:
             #Teto
             z = ceil(z)
             mem[INDEX0x80808888] = tX(floatHEX(z).upper())
-            mem[INDEX0x8080888F] = '0x00000000'
+            mem[INDEX0x8080888C] = '0x00000000'
             cicloCONS = 1
             st = "0"
             opFPU = "00000"
@@ -2614,7 +2607,7 @@ while True:
             #Piso
             z = floor(z)
             mem[INDEX0x80808888] = tX(floatHEX(z).upper())
-            mem[INDEX0x8080888F] = '0x00000000'
+            mem[INDEX0x8080888C] = '0x00000000'
             cicloCONS = 1
             st = "0"
             opFPU = "00000"
@@ -2623,7 +2616,7 @@ while True:
             try:
                 z = round(z)
                 mem[INDEX0x80808888] = tX(floatHEX(z).upper())
-                mem[INDEX0x8080888F] = '0x00000000'
+                mem[INDEX0x8080888C] = '0x00000000'
                 cicloCONS = 1
                 st = "0"
                 opFPU = "00000"
@@ -2663,8 +2656,8 @@ while True:
 
     variavel = 0
 
-# if ativaTerminal == 1:
-#     terminalIMPRESSAO()
+if ativaTerminal == 1:
+    terminalIMPRESSAO()
     
     
 end = time.perf_counter()
@@ -2672,6 +2665,3 @@ print(end - start)
 arqOutput.write("\n[END OF SIMULATION]")
 arqInput.close()
 arqOutput.close()
-
-# for i in range(400):
-#     print(terminal[i])
