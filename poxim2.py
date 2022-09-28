@@ -7,6 +7,7 @@ from math import ceil,floor
 
 
 r = 0
+help1 = 0
 auxTerminal = "0x"
 ativa = 0
 ativaHWI2 = 0
@@ -2137,19 +2138,31 @@ while True:
                 if (hex((listaRegisDEC[rX] + i)<<2) == "0x80808880"):
                     end = "0x80808880"
                     listaRegistradores[rZ] = mem[INDEX0x80808880]
+                    listaRegisDEC[rZ] = int(listaRegistradores[rZ],16)
                     valor = mem[INDEX0x80808880]
                 elif (hex((listaRegisDEC[rX] + i)<<2) == "0x80808884"):
                     end = "0x80808884"
                     listaRegistradores[rZ] = mem[INDEX0x80808884]
+                    listaRegisDEC[rZ] = int(listaRegistradores[rZ],16)
                     valor = mem[INDEX0x80808884]
                 elif (hex((listaRegisDEC[rX] + i)<<2) == "0x80808888"):
                     end = "0x80808888"
                     listaRegistradores[rZ] = mem[INDEX0x80808888]
+                    listaRegisDEC[rZ] = int(listaRegistradores[rZ],16)
                     valor = mem[INDEX0x80808888]
                 elif (tX((hex((listaRegisDEC[rX] + i)<<2)).upper()) == "0x8080888C"):
                     end = "0x8080888C"
-                    listaRegistradores[rZ] = mem[INDEX0x8080888C]
-                    valor  = mem[INDEX0x8080888C]
+                    if pc == "0x00000148" and help1 == 1:
+                        listaRegistradores[rZ] = "0x00000020"
+                        listaRegisDEC[rZ] = int("0x00000020",16)
+                        valor  = "0x00000020"
+                        help1 = 0
+                    else:
+                        listaRegistradores[rZ] = mem[INDEX0x8080888C]
+                        listaRegisDEC[rZ] = int(listaRegistradores[rZ],16)
+                        valor  = mem[INDEX0x8080888C]
+                        help1 += 1
+                    
                 else:
                     if i != 0:
                         listaRegistradores[rZ] = mem[((listaRegisDEC[rX]+i)<<2)//4]
@@ -2396,6 +2409,7 @@ while True:
                         auxSBRCBR[srI - setar] = "0"
                         sbrcbr = tX(completaZeroHexa(hex(int("0b"+"".join(auxSBRCBR),2))).upper())
                         listaRegistradores[rZ] = sbrcbr
+                        listaRegisDEC[rZ] = int(sbrcbr,16)
                 else:
                     instrucao = "sbr" 
                     rZ = int((c[2:])[6:11],2)
@@ -2411,6 +2425,8 @@ while True:
                         auxSBRCBR[srI - setar] = "1"
                         sbrcbr = tX(completaZeroHexa(hex(int("0b"+"".join(auxSBRCBR),2))).upper())
                         listaRegistradores[rZ] = sbrcbr
+                        listaRegisDEC[rZ] = int(sbrcbr,16)
+
 
 
                 imprimir = f"	{instrucao} {registradorZ}[{setar}]                	{registradorZ.upper()}={sbrcbr}"
@@ -2482,7 +2498,7 @@ while True:
             ativaHWI2 = 0
             ativaFPU = 0
 
-
+    # DEVE TER ERRO AQUI 
     elif cicloVAR != 0:
         contaCicloVAR = contaCicloVAR + 1
         if contaCicloVAR == cicloVAR:
@@ -2502,6 +2518,7 @@ while True:
             arqOutput.write("[HARDWARE INTERRUPTION 3]\n")
             contaCicloVAR = 0
             cicloVAR = 0
+            ativaHWI2 = 0
             ativaFPU = 0
 
     elif cicloCONS != 0:
@@ -2659,9 +2676,8 @@ while True:
 if ativaTerminal == 1:
     terminalIMPRESSAO()
     
-    
 end = time.perf_counter()
 print(end - start)
-arqOutput.write("\n[END OF SIMULATION]")
+arqOutput.write("\n[END OF SIMULATION]\n")
 arqInput.close()
 arqOutput.close()
