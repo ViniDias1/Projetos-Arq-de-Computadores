@@ -11,6 +11,7 @@ help1 = 0
 auxTerminal = "0x"
 ativa = 0
 ativaHWI2 = 0
+ativaHWI3 = 0
 arqInput = open("poxim2.input.txt",'r')
 arqOutput = open("saida.out.txt",'w')
 start = time.perf_counter()
@@ -180,7 +181,7 @@ pc = completaZeroHexa(hex(0))
 listaRegistradores[0] = "0x00000000"
 proxIns = completaZeroHexa(binario[0])
 num1,num2,proxPC,ultimaLinha,registradorL4,variavel,en,t,ativaTerminal,ativaFPU,ativaSWI,cicloVAR,cicloCONS,contaCicloVAR,contaCicloCONS = 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-#X,Y=0,0
+X,Y=0,0
 iN,expoente1,expoente2 = 0,0,0
 contaTerminal = 0
 regisEsp = ["r0","r1","r2","r3","r4","r5","r6","r7","r8","r9","r10","r11","r12","r13","r14",
@@ -201,7 +202,7 @@ try:
 except ValueError:
     INDEX0x80808884 = 0
 try:
-    INDEX0x80808888 = mem.index("0x20202222")
+    INDEX0x80808888 = mem.index("0x202022220")
 except ValueError:
     INDEX0x80808888 = 0
 try:
@@ -1272,7 +1273,7 @@ while True:
                     imprimir = f"	{instrucao} {regisEsp[ipush[0]]},{regisEsp[ipush[1]]},{regisEsp[ipush[2]]}            	MEM[{topo}]"+"{"+ f"{resulpush[0]},{resulpush[1]},{resulpush[2]}" +"}={"+f"{(regisEsp[ipush[0]]).upper()},{(regisEsp[ipush[1]]).upper()},{(regisEsp[ipush[2]]).upper()}"+"}"
                     arqOutput.write(pc+":"+imprimir+"\n")
                 elif cont == 4:
-                    imprimir = f"	{instrucao} {regisEsp[ipush[0]]},{regisEsp[ipush[1]]},{regisEsp[ipush[2]]},{regisEsp[ipush[3]]}     	MEM[{topo}]"+"{"+ f"{resulpush[0]},{resulpush[1]},{resulpush[2]},{resulpush[3]}" +"}={"+f"{(regisEsp[ipush[0]]).upper()},{(regisEsp[ipush[1]]).upper()},{(regisEsp[ipush[2]]).upper()},{(regisEsp[ipush[3]]).upper()}"+"}"
+                    imprimir = f"	{instrucao} {regisEsp[ipush[0]]},{regisEsp[ipush[1]]},{regisEsp[ipush[2]]},{regisEsp[ipush[3]]}         	MEM[{topo}]"+"{"+ f"{resulpush[0]},{resulpush[1]},{resulpush[2]},{resulpush[3]}" +"}={"+f"{(regisEsp[ipush[0]]).upper()},{(regisEsp[ipush[1]]).upper()},{(regisEsp[ipush[2]]).upper()},{(regisEsp[ipush[3]]).upper()}"+"}"
                     arqOutput.write(pc+":"+imprimir+"\n")
                 elif cont == 5:
                     imprimir = f"	{instrucao} {regisEsp[ipush[0]]},{regisEsp[ipush[1]]},{regisEsp[ipush[2]]},{regisEsp[ipush[3]]},{regisEsp[ipush[4]]}     	MEM[{topo}]"+"{"+ f"{resulpush[0]},{resulpush[1]},{tX((resulpush[2]).upper())},{resulpush[3]},{resulpush[4]}" +"}={"+f"{(regisEsp[ipush[0]]).upper()},{(regisEsp[ipush[1]]).upper()},{(regisEsp[ipush[2]]).upper()},{(regisEsp[ipush[3]]).upper()},{(regisEsp[ipush[4]]).upper()}"+"}"
@@ -1321,7 +1322,7 @@ while True:
                     imprimir = f"	{instrucao} {regisEsp[ipop[0]]},{regisEsp[ipop[1]]},{regisEsp[ipop[2]]}             	"+"{"+f"{(regisEsp[ipop[0]]).upper()},{(regisEsp[ipop[1]]).upper()},{(regisEsp[ipop[2]]).upper()}"+"}="+f"MEM[{topo}]"+"{"+f"{resulpop[0]},{resulpop[1]},{resulpop[2]}"+"}"
                     arqOutput.write(pc+":"+imprimir+"\n")
                 elif cont == 4:
-                    imprimir = f"	{instrucao} {regisEsp[ipop[0]]},{regisEsp[ipop[1]]},{regisEsp[ipop[2]]},{regisEsp[ipop[3]]}     	"+"{"+f"{(regisEsp[ipop[0]]).upper()},{(regisEsp[ipop[1]]).upper()},{(regisEsp[ipop[2]]).upper()},{(regisEsp[ipop[3]]).upper()}"+"}="+f"MEM[{topo}]"+"{"+f"{resulpop[0]},{resulpop[1]},{resulpop[2]},{resulpop[3]}"+"}"
+                    imprimir = f"	{instrucao} {regisEsp[ipop[0]]},{regisEsp[ipop[1]]},{regisEsp[ipop[2]]},{regisEsp[ipop[3]]}          	"+"{"+f"{(regisEsp[ipop[0]]).upper()},{(regisEsp[ipop[1]]).upper()},{(regisEsp[ipop[2]]).upper()},{(regisEsp[ipop[3]]).upper()}"+"}="+f"MEM[{topo}]"+"{"+f"{resulpop[0]},{resulpop[1]},{resulpop[2]},{resulpop[3]}"+"}"
                     arqOutput.write(pc+":"+imprimir+"\n")
                 elif cont == 5:
                     imprimir = f"	{instrucao} {regisEsp[ipop[0]]},{regisEsp[ipop[1]]},{regisEsp[ipop[2]]},{regisEsp[ipop[3]]},{regisEsp[ipop[4]]}     	"+"{"+f"{(regisEsp[ipop[0]]).upper()},{(regisEsp[ipop[1]]).upper()},{(regisEsp[ipop[2]]).upper()},{(regisEsp[ipop[3]]).upper()},{(regisEsp[ipop[4]]).upper()}"+"}="+f"MEM[{topo}]"+"{"+f"{resulpop[0]},{resulpop[1]},{resulpop[2]},{resulpop[3]},{resulpop[4]}"+"}"
@@ -1674,16 +1675,23 @@ while True:
                 if somaBini[0] == "1":
                     cy = "1"
                     sr[31] = cy
+                else:
+                    sr[31] = "0"
                 if (somaBini[0] == "1") and somai < 0:
                     sn = "1"
                     sr[27] = sn
+                else:
+                    sr[27] = "0"
                 if ((n1[0] == n2[0] and somaBini[0] != n1[0])):
                     ov = "1"
                     sr[28] = ov
-                if listaRegistradores[rZ] == "0x00000000":
+                else:
+                    sr[28] = "0"
+                if completaZeroHexa(hex(int(somaBini,2))) == "0x00000000":
                     zn = "1"
                     sr[25] = zn
-
+                else:
+                    sr[25] = "0"
                 if rZ == 0:
                     listaRegistradores[rZ] = completaZeroHexa(hex(0))
                     listaRegisDEC[rZ] = 0
@@ -2161,6 +2169,7 @@ while True:
                         listaRegistradores[rZ] = mem[INDEX0x8080888C]
                         listaRegisDEC[rZ] = int(listaRegistradores[rZ],16)
                         valor  = mem[INDEX0x8080888C]
+                        #mem[INDEX0x8080888C] = "0x00000000"
                         help1 += 1
                     
                 else:
@@ -2306,8 +2315,8 @@ while True:
                     ativaFPU = 1
                     end = "0x8080888C"
                     valor = listaRegistradores[rZ]
-                    st = completaZero(bin(int(valor,16))[2:])[27:]
-                    opFPU = completaZero(bin(int(valor,16))[2:])[27]
+                    #st = completaZero(bin(int(valor,16))[2:])[27:]
+                    opFPU = completaZero(bin(int(valor,16))[2:])[27:]
                     mem[INDEX0x8080888C] = valor
                 
                     
@@ -2499,7 +2508,7 @@ while True:
             ativaFPU = 0
 
     # DEVE TER ERRO AQUI 
-    elif cicloVAR != 0:
+    elif ativaHWI3 != 0:
         contaCicloVAR = contaCicloVAR + 1
         if contaCicloVAR == cicloVAR:
             pc4ISR = tX(completaZeroHexa(hex(proxPC+4)).upper())
@@ -2518,7 +2527,7 @@ while True:
             arqOutput.write("[HARDWARE INTERRUPTION 3]\n")
             contaCicloVAR = 0
             cicloVAR = 0
-            ativaHWI2 = 0
+            ativaHWI3 = 0
             ativaFPU = 0
 
     elif cicloCONS != 0:
@@ -2553,10 +2562,11 @@ while True:
             try:
                 z = float(X + Y)
                 mem[INDEX0x80808888] = tX(floatHEX(z).upper())
-                mem[INDEX0x8080888C] = '0x00000000'
+                #mem[INDEX0x8080888C] = '0x00000000'
                 cicloVAR = abs(expoente1 - expoente2) + 1
                 st = "0"
                 opFPU = "00000"
+                ativaHWI3 = 1
             except:
                 cicloVAR = abs(expoente1 - expoente2) + 1
 
@@ -2568,6 +2578,7 @@ while True:
             cicloVAR = abs(expoente1 - expoente2) + 1
             st = "0"
             opFPU = "00000"
+            ativaHWI3 = 1
         elif opFPU == "00011":
             #Multiplicao
             z = float(X * Y)
@@ -2576,6 +2587,7 @@ while True:
             cicloVAR = abs(expoente1 - expoente2) + 1
             st = "0"
             opFPU = "00000"
+            ativaHWI3 = 1
         elif opFPU == "00100":
             try:
                 z = float(X / Y)
@@ -2583,6 +2595,7 @@ while True:
                 mem[INDEX0x8080888C] = '0x00000000'
                 st = "0"
                 opFPU = "00000"
+                ativaHWI3 = 1
             except ZeroDivisionError:
                 ativaFPU = 1
                 ativaHWI2 = 1
