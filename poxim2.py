@@ -16,6 +16,7 @@ arqInput = open("poxim2.input.txt",'r')
 arqOutput = open("saida.out.txt",'w')
 start = time.perf_counter()
 hexa = []
+valoresFPU = ["x","y","z","control"]
 aux = 0
 binario = [("0b00000000000000000000000000000000")]*(32765)
 mem = ([("0x00000000")]*(32765))
@@ -1273,7 +1274,7 @@ while True:
                     imprimir = f"	{instrucao} {regisEsp[ipush[0]]},{regisEsp[ipush[1]]},{regisEsp[ipush[2]]}            	MEM[{topo}]"+"{"+ f"{resulpush[0]},{resulpush[1]},{resulpush[2]}" +"}={"+f"{(regisEsp[ipush[0]]).upper()},{(regisEsp[ipush[1]]).upper()},{(regisEsp[ipush[2]]).upper()}"+"}"
                     arqOutput.write(pc+":"+imprimir+"\n")
                 elif cont == 4:
-                    imprimir = f"	{instrucao} {regisEsp[ipush[0]]},{regisEsp[ipush[1]]},{regisEsp[ipush[2]]},{regisEsp[ipush[3]]}         	MEM[{topo}]"+"{"+ f"{resulpush[0]},{resulpush[1]},{resulpush[2]},{resulpush[3]}" +"}={"+f"{(regisEsp[ipush[0]]).upper()},{(regisEsp[ipush[1]]).upper()},{(regisEsp[ipush[2]]).upper()},{(regisEsp[ipush[3]]).upper()}"+"}"
+                    imprimir = f"	{instrucao} {regisEsp[ipush[0]]},{regisEsp[ipush[1]]},{regisEsp[ipush[2]]},{regisEsp[ipush[3]]}         	MEM[{topo}]"+"{"+ f"{resulpush[0]},{resulpush[1]},{tX((completaZeroHexa(resulpush[2])).upper())},{resulpush[3]}" +"}={"+f"{(regisEsp[ipush[0]]).upper()},{(regisEsp[ipush[1]]).upper()},{(regisEsp[ipush[2]]).upper()},{(regisEsp[ipush[3]]).upper()}"+"}"
                     arqOutput.write(pc+":"+imprimir+"\n")
                 elif cont == 5:
                     imprimir = f"	{instrucao} {regisEsp[ipush[0]]},{regisEsp[ipush[1]]},{regisEsp[ipush[2]]},{regisEsp[ipush[3]]},{regisEsp[ipush[4]]}     	MEM[{topo}]"+"{"+ f"{resulpush[0]},{resulpush[1]},{tX((resulpush[2]).upper())},{resulpush[3]},{resulpush[4]}" +"}={"+f"{(regisEsp[ipush[0]]).upper()},{(regisEsp[ipush[1]]).upper()},{(regisEsp[ipush[2]]).upper()},{(regisEsp[ipush[3]]).upper()},{(regisEsp[ipush[4]]).upper()}"+"}"
@@ -1322,7 +1323,7 @@ while True:
                     imprimir = f"	{instrucao} {regisEsp[ipop[0]]},{regisEsp[ipop[1]]},{regisEsp[ipop[2]]}             	"+"{"+f"{(regisEsp[ipop[0]]).upper()},{(regisEsp[ipop[1]]).upper()},{(regisEsp[ipop[2]]).upper()}"+"}="+f"MEM[{topo}]"+"{"+f"{resulpop[0]},{resulpop[1]},{resulpop[2]}"+"}"
                     arqOutput.write(pc+":"+imprimir+"\n")
                 elif cont == 4:
-                    imprimir = f"	{instrucao} {regisEsp[ipop[0]]},{regisEsp[ipop[1]]},{regisEsp[ipop[2]]},{regisEsp[ipop[3]]}          	"+"{"+f"{(regisEsp[ipop[0]]).upper()},{(regisEsp[ipop[1]]).upper()},{(regisEsp[ipop[2]]).upper()},{(regisEsp[ipop[3]]).upper()}"+"}="+f"MEM[{topo}]"+"{"+f"{resulpop[0]},{resulpop[1]},{resulpop[2]},{resulpop[3]}"+"}"
+                    imprimir = f"	{instrucao} {regisEsp[ipop[0]]},{regisEsp[ipop[1]]},{regisEsp[ipop[2]]},{regisEsp[ipop[3]]}          	"+"{"+f"{(regisEsp[ipop[0]]).upper()},{(regisEsp[ipop[1]]).upper()},{(regisEsp[ipop[2]]).upper()},{(regisEsp[ipop[3]]).upper()}"+"}="+f"MEM[{topo}]"+"{"+f"{resulpop[0]},{tX(completaZeroHexa((resulpop[1])).upper())},{resulpop[2]},{resulpop[3]}"+"}"
                     arqOutput.write(pc+":"+imprimir+"\n")
                 elif cont == 5:
                     imprimir = f"	{instrucao} {regisEsp[ipop[0]]},{regisEsp[ipop[1]]},{regisEsp[ipop[2]]},{regisEsp[ipop[3]]},{regisEsp[ipop[4]]}     	"+"{"+f"{(regisEsp[ipop[0]]).upper()},{(regisEsp[ipop[1]]).upper()},{(regisEsp[ipop[2]]).upper()},{(regisEsp[ipop[3]]).upper()},{(regisEsp[ipop[4]]).upper()}"+"}="+f"MEM[{topo}]"+"{"+f"{resulpop[0]},{resulpop[1]},{resulpop[2]},{resulpop[3]},{resulpop[4]}"+"}"
@@ -2068,7 +2069,7 @@ while True:
                 i = int(imed,2)
                 if (tX(hex((listaRegisDEC[rX] + i)).upper()) == "0x8080888C"):
                     end = "0x8080888C"
-                    valor = completaZeroHexa8(mem[INDEX0x8080888C])
+                    valor = completaZeroHexa8(valoresFPU)
                     listaRegistradores[rZ] = valor
                 
                 elif (tX(hex((listaRegisDEC[rX] + i)).upper()) == "0x8888888B"): 
@@ -2145,19 +2146,19 @@ while True:
                 teste2 = hex((listaRegisDEC[rX] + i))
                 if (hex((listaRegisDEC[rX] + i)<<2) == "0x80808880"):
                     end = "0x80808880"
-                    listaRegistradores[rZ] = mem[INDEX0x80808880]
+                    listaRegistradores[rZ] = valoresFPU[0]
                     listaRegisDEC[rZ] = int(listaRegistradores[rZ],16)
-                    valor = mem[INDEX0x80808880]
+                    valor = valoresFPU[0]
                 elif (hex((listaRegisDEC[rX] + i)<<2) == "0x80808884"):
                     end = "0x80808884"
-                    listaRegistradores[rZ] = mem[INDEX0x80808884]
+                    listaRegistradores[rZ] = valoresFPU[1]
                     listaRegisDEC[rZ] = int(listaRegistradores[rZ],16)
-                    valor = mem[INDEX0x80808884]
+                    valor = valoresFPU[1]
                 elif (hex((listaRegisDEC[rX] + i)<<2) == "0x80808888"):
                     end = "0x80808888"
-                    listaRegistradores[rZ] = mem[INDEX0x80808888]
+                    listaRegistradores[rZ] = valoresFPU[2]
                     listaRegisDEC[rZ] = int(listaRegistradores[rZ],16)
-                    valor = mem[INDEX0x80808888]
+                    valor = valoresFPU[2]
                 elif (tX((hex((listaRegisDEC[rX] + i)<<2)).upper()) == "0x8080888C"):
                     end = "0x8080888C"
                     if pc == "0x00000148" and help1 == 1:
@@ -2166,10 +2167,10 @@ while True:
                         valor  = "0x00000020"
                         help1 = 0
                     else:
-                        listaRegistradores[rZ] = mem[INDEX0x8080888C]
+                        listaRegistradores[rZ] = valoresFPU[3]
                         listaRegisDEC[rZ] = int(listaRegistradores[rZ],16)
-                        valor  = mem[INDEX0x8080888C]
-                        #mem[INDEX0x8080888C] = "0x00000000"
+                        valor  = valoresFPU[3]
+                        valoresFPU[3] = "0x00000000"
                         help1 += 1
                     
                 else:
@@ -2178,6 +2179,8 @@ while True:
                         listaRegisDEC[rZ] = int(listaRegistradores[rZ],16)
                         end = tX(completaZeroHexa(hex((listaRegisDEC[rX] + i)<<2)).upper())
                         valor = (listaRegistradores[rZ])  
+                    elif i == 135:
+                        print("opa")
                     else:
                         listaRegistradores[rZ] = mem[((listaRegisDEC[rX]+i))//4]
                         listaRegisDEC[rZ] = int(listaRegistradores[rZ],16)
@@ -2213,7 +2216,7 @@ while True:
                     valor = completaZeroHexa8(listaRegistradores[rZ])
                     st = completaZero(bin(int(valor,16))[2:])[27]
                     opFPU = completaZero(bin(int(valor,16))[2:])[27:]
-                    mem[INDEX0x8080888C] = valor
+                    valoresFPU[3] = valor
                     
                     
                 else:
@@ -2294,7 +2297,7 @@ while True:
                     expoente1 = (int(completaZero(bin(auxX)[2:])[1:9],2)) - 127
                     if expoente1 < -127:
                         expoente1 = 0
-                    mem[INDEX0x80808880] = valor
+                    valoresFPU[0] = valor
 
                 elif tX(hex((listaRegisDEC[rX] + i)<<2).upper()) == "0x80808884":
                     end = "0x80808884"
@@ -2304,12 +2307,12 @@ while True:
                     expoente2 = (int(completaZero(bin(auxY)[2:])[1:9],2)) - 127
                     if expoente2 < -127:
                         expoente2 = 0
-                    mem[INDEX0x80808884] = valor
+                    valoresFPU[1] = valor
 
                 elif tX(hex((listaRegisDEC[rX] + i)<<2).upper()) == "0x80808888":
                     end = "0x80808888"
                     valor = listaRegistradores[rZ]
-                    mem[INDEX0x80808888] = valor
+                    valoresFPU[2] = valor
                 
                 elif tX(hex((listaRegisDEC[rX] + i)<<2).upper()) == "0x8080888C":
                     ativaFPU = 1
@@ -2317,7 +2320,7 @@ while True:
                     valor = listaRegistradores[rZ]
                     #st = completaZero(bin(int(valor,16))[2:])[27:]
                     opFPU = completaZero(bin(int(valor,16))[2:])[27:]
-                    mem[INDEX0x8080888C] = valor
+                    valoresFPU[3] = valor
                 
                     
                 else:
@@ -2388,15 +2391,6 @@ while True:
                 listaRegistradores[30] = completaZeroHexa(hex(sp))
                 listaRegisDEC[30] = sp
                 pulo = mem[sp]
-                # try:
-                #     pulo = mem[sp]
-                # except IndexError:
-                #     for i in terminal:
-                #         if i == '-1':
-                #             break
-                #         else:
-                #             print(i+",",end='')
-
                 proxIns = binario[int(pulo,16)//4]
                 imprimir = imprimir + f",PC=MEM[{tX(completaZeroHexa(hex(sp)).upper())}]={pulo}"
                 arqOutput.write(pc+":"+imprimir+"\n")
@@ -2561,7 +2555,7 @@ while True:
             #Adicao
             try:
                 z = float(X + Y)
-                mem[INDEX0x80808888] = tX(floatHEX(z).upper())
+                valoresFPU[2] = tX(floatHEX(z).upper())
                 #mem[INDEX0x8080888C] = '0x00000000'
                 cicloVAR = abs(expoente1 - expoente2) + 1
                 st = "0"
@@ -2573,8 +2567,8 @@ while True:
         elif opFPU == "00010":
             #Subtracao
             z = float(X - Y)
-            mem[INDEX0x80808888] = tX(floatHEX(z).upper())
-            mem[INDEX0x8080888C] = '0x00000000'
+            valoresFPU[2] = tX(floatHEX(z).upper())
+            #mem[INDEX0x8080888C] = '0x00000000'
             cicloVAR = abs(expoente1 - expoente2) + 1
             st = "0"
             opFPU = "00000"
@@ -2582,8 +2576,8 @@ while True:
         elif opFPU == "00011":
             #Multiplicao
             z = float(X * Y)
-            mem[INDEX0x80808888] = tX(floatHEX(z).upper())
-            mem[INDEX0x8080888C] = '0x00000000'
+            valoresFPU[2] = tX(floatHEX(z).upper())
+            #mem[INDEX0x8080888C] = '0x00000000'
             cicloVAR = abs(expoente1 - expoente2) + 1
             st = "0"
             opFPU = "00000"
@@ -2591,8 +2585,8 @@ while True:
         elif opFPU == "00100":
             try:
                 z = float(X / Y)
-                mem[INDEX0x80808888] = tX(floatHEX(z).upper())
-                mem[INDEX0x8080888C] = '0x00000000'
+                valoresFPU[2] = tX(floatHEX(z).upper())
+                #mem[INDEX0x8080888C] = '0x00000000'
                 st = "0"
                 opFPU = "00000"
                 ativaHWI3 = 1
@@ -2605,20 +2599,20 @@ while True:
         elif opFPU == "00101":
             #Atribuicao10000000
             X = z
-            mem[INDEX0x80808880] = mem[INDEX0x80808888]
-            expoente1 = int(completaZero(bin(int(mem[INDEX0x80808880],16))[2:])[1:9],2) - 127
+            valoresFPU[0] = valoresFPU[2]
+            expoente1 = int(completaZero(bin(int(valoresFPU[0],16))[2:])[1:9],2) - 127
             if expoente1 <= -127:
                 expoente1 = 0
-            mem[INDEX0x8080888C] = '0x00000000'
+            #mem[INDEX0x8080888C] = '0x00000000'
             cicloCONS = 1
             st = "0"
             opFPU = "00000"
         elif opFPU == "00110":
             #Atribuicao
             Y = z
-            mem[INDEX0x80808884] = mem[INDEX0x80808888]
-            mem[INDEX0x8080888C] = '0x00000000'
-            expoente2 = int(completaZero(bin(int(mem[INDEX0x80808884],16))[2:])[1:9],2) - 127
+            valoresFPU[1] = valoresFPU[2]
+            #mem[INDEX0x8080888C] = '0x00000000'
+            expoente2 = int(completaZero(bin(int(valoresFPU[1],16))[2:])[1:9],2) - 127
             if expoente2 <= -127:
                 expoente2 = 0
             cicloCONS = 1
@@ -2627,8 +2621,8 @@ while True:
         elif opFPU == "00111":
             #Teto
             z = ceil(z)
-            mem[INDEX0x80808888] = tX(floatHEX(z).upper())
-            mem[INDEX0x8080888C] = '0x00000000'
+            valoresFPU[2] = tX(floatHEX(z).upper())
+            #mem[INDEX0x8080888C] = '0x00000000'
             cicloCONS = 1
             st = "0"
             opFPU = "00000"
@@ -2636,8 +2630,8 @@ while True:
         elif opFPU == "01000":
             #Piso
             z = floor(z)
-            mem[INDEX0x80808888] = tX(floatHEX(z).upper())
-            mem[INDEX0x8080888C] = '0x00000000'
+            valoresFPU[2] = tX(floatHEX(z).upper())
+            #mem[INDEX0x8080888C] = '0x00000000'
             cicloCONS = 1
             st = "0"
             opFPU = "00000"
@@ -2645,8 +2639,8 @@ while True:
             #Arredondamento
             try:
                 z = round(z)
-                mem[INDEX0x80808888] = tX(floatHEX(z).upper())
-                mem[INDEX0x8080888C] = '0x00000000'
+                valoresFPU[2] = tX(floatHEX(z).upper())
+                #mem[INDEX0x8080888C] = '0x00000000'
                 cicloCONS = 1
                 st = "0"
                 opFPU = "00000"
