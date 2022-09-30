@@ -683,6 +683,11 @@ while True:
                         sp = sp - 4
                         mem[sp] = listaRegistradores[27]
                         sp = sp - 4
+                        listaRegistradores[26] = "0x00000000"
+                        listaRegisDEC[26] = 0
+                        listaRegistradores[27] = tX(completaZeroHexa(hex(proxPC)).upper())
+                        listaRegisDEC[27] = int(listaRegistradores[27],16)
+
 
                     variavelHEXA = tX(dvn.upper())
                     variavelHEXA2 = tX(dvr.upper())
@@ -1964,6 +1969,10 @@ while True:
                     sp = sp - 4
                     mem[sp] = listaRegistradores[27]
                     sp = sp - 4
+                    listaRegistradores[26] = "0x00000000"
+                    listaRegisDEC[26] = 0
+                    listaRegistradores[27] = tX(completaZeroHexa(hex(proxPC)).upper())
+                    listaRegisDEC[27] = int(listaRegistradores[27],16)
 
                 variavelHEXA = tX(dvn.upper())
                 listaRegistradores[rZ] = variavelHEXA
