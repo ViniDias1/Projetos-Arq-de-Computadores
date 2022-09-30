@@ -669,10 +669,6 @@ while True:
                     except ZeroDivisionError:
                         
                         sr[26] = "1"
-                        listaRegistradores[26] = "0x00000000"
-                        listaRegisDEC[26] = 0
-                        #listaRegistradores[27] = pc
-                        listaRegisDEC[27] = int(pc,16)
                         pulo = "0x00000008"
                         proxIns = binario[2]
                         dvn = listaRegistradores[rZ]
@@ -687,7 +683,6 @@ while True:
                         sp = sp - 4
                         mem[sp] = listaRegistradores[27]
                         sp = sp - 4
-                        listaRegistradores[27] = pc
 
                     variavelHEXA = tX(dvn.upper())
                     variavelHEXA2 = tX(dvr.upper())
@@ -1956,10 +1951,6 @@ while True:
                         sr[28] = "0"
                 except ZeroDivisionError:
                     sr[26] = "1"
-                    listaRegistradores[26] = "0x00000000"
-                    listaRegisDEC[26] = 0
-                    #listaRegistradores[27] = pc
-                    listaRegisDEC[27] = int(pc,16)
                     pulo = "0x00000008"
                     proxIns = binario[2]
                     dvn = listaRegistradores[rZ]
@@ -1973,7 +1964,6 @@ while True:
                     sp = sp - 4
                     mem[sp] = listaRegistradores[27]
                     sp = sp - 4
-                    listaRegistradores[27] = pc
 
                 variavelHEXA = tX(dvn.upper())
                 listaRegistradores[rZ] = variavelHEXA
@@ -2179,8 +2169,7 @@ while True:
                         listaRegisDEC[rZ] = int(listaRegistradores[rZ],16)
                         end = tX(completaZeroHexa(hex((listaRegisDEC[rX] + i)<<2)).upper())
                         valor = (listaRegistradores[rZ])  
-                    elif i == 135:
-                        print("opa")
+                
                     else:
                         listaRegistradores[rZ] = mem[((listaRegisDEC[rX]+i))//4]
                         listaRegisDEC[rZ] = int(listaRegistradores[rZ],16)
@@ -2393,6 +2382,7 @@ while True:
                 pulo = mem[sp]
                 proxIns = binario[int(pulo,16)//4]
                 imprimir = imprimir + f",PC=MEM[{tX(completaZeroHexa(hex(sp)).upper())}]={pulo}"
+                
                 arqOutput.write(pc+":"+imprimir+"\n")
 
             elif operacao == "100001":
@@ -2437,8 +2427,6 @@ while True:
         
         else:
             sr[29] = "1"
-        # listaRegistradores[26] = completaZero(bin(int(listaRegistradores[28],16)))[:7]
-        #listaRegistradores[27] = pc
             pc4 = tX(completaZeroHexa(hex(proxPC+4)).upper())
             mem[sp] = pc4
             sp = sp - 4
@@ -2459,10 +2447,11 @@ while True:
     if en == "1":
         counter = counter - 1
         if (counter <= -1) and (sr[30] == "1"):
+
             pc4 = tX(completaZeroHexa(hex(proxPC+4)).upper())
             mem[sp] = pc4
             sp = sp - 4
-            mem[sp] = "0x00000000"#"0xE1AC04DA"
+            mem[sp] = listaRegistradores[26]
             sp = sp - 4
             mem[sp] = listaRegistradores[27]
             sp = sp - 4
@@ -2470,12 +2459,11 @@ while True:
             listaRegistradores[27] = pc
             listaRegisDEC[26] = int("0xE1AC04DA",16)
             listaRegisDEC[27] = int(pc,16)
-            
             en = "0"
             proxIns = binario[4]
-
             pulo = "0x00000010"
             arqOutput.write("[HARDWARE INTERRUPTION 1]\n")
+
 #--------Rotina WatchDog--------# 
 
 #--------Rotina FPU--------# 
@@ -2486,13 +2474,13 @@ while True:
             mem[sp] = pc4ISR
             sp = sp - 4
             mem[sp] =  listaRegistradores[26]
-            listaRegistradores[26] = "0x01EEE754"
-            listaRegisDEC[26] = int("0x01EEE754",16)
             sp = sp - 4
             mem[sp] = listaRegistradores[27]
+            sp = sp - 4
+            listaRegistradores[26] = "0x01EEE754"
+            listaRegisDEC[26] = int("0x01EEE754",16)
             listaRegistradores[27] = tX(completaZeroHexa(hex(proxPC)).upper())
             listaRegisDEC[27] = int(listaRegistradores[27],16)
-            sp = sp - 4
             pulo = "0x00000014"
             proxIns = binario[5]
             arqOutput.write("[HARDWARE INTERRUPTION 2]\n")
@@ -2501,7 +2489,6 @@ while True:
             ativaHWI2 = 0
             ativaFPU = 0
 
-    # DEVE TER ERRO AQUI 
     elif ativaHWI3 != 0:
         contaCicloVAR = contaCicloVAR + 1
         if contaCicloVAR == cicloVAR:
@@ -2509,13 +2496,13 @@ while True:
             mem[sp] = pc4ISR
             sp = sp - 4
             mem[sp] =  listaRegistradores[26]
-            listaRegistradores[26] = "0x01EEE754"
-            listaRegisDEC[26] = int("0x01EEE754",16)
             sp = sp - 4
             mem[sp] = listaRegistradores[27]
+            sp = sp - 4
+            listaRegistradores[26] = "0x01EEE754"
+            listaRegisDEC[26] = int("0x01EEE754",16)
             listaRegistradores[27] = tX(completaZeroHexa(hex(proxPC)).upper())
             listaRegisDEC[27] = int(listaRegistradores[27],16)
-            sp = sp - 4
             pulo = "0x00000018"
             proxIns = binario[6]
             arqOutput.write("[HARDWARE INTERRUPTION 3]\n")
@@ -2525,18 +2512,17 @@ while True:
             ativaFPU = 0
 
     elif cicloCONS != 0:
-        
         pc4ISR = tX(completaZeroHexa(hex(int(pulo,16))).upper())
         mem[sp] = pc4ISR
         sp = sp - 4
         mem[sp] =  listaRegistradores[26]
-        listaRegistradores[26] = "0x01EEE754"
-        listaRegisDEC[26] = int("0x01EEE754",16)
         sp = sp - 4
         mem[sp] = listaRegistradores[27]
+        sp = sp - 4
+        listaRegistradores[26] = "0x01EEE754"
+        listaRegisDEC[26] = int("0x01EEE754",16)
         listaRegistradores[27] = tX(completaZeroHexa(hex(proxPC)).upper())
         listaRegisDEC[27] = int(listaRegistradores[27],16)
-        sp = sp - 4
         pulo = "0x0000001C"
         proxIns = binario[7]
         arqOutput.write("[HARDWARE INTERRUPTION 4]\n")
