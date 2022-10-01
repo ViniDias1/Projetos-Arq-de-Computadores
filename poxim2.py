@@ -13,8 +13,8 @@ auxTerminal = "0x"
 ativa = 0
 ativaHWI2 = 0
 ativaHWI3 = 0
-arqInput = open(sys.argv[1],'r')
-arqOutput = open(sys.argv[2],'w')
+arqInput = open("poxim2.input.txt",'r')
+arqOutput = open("saida.out.txt",'w')
 start = time.perf_counter()
 hexa = []
 valoresFPU = ["x","y","z","control"]
@@ -152,16 +152,7 @@ def terminalIMPRESSAO():
         teste += 1    
     arqOutput.write("[TERMINAL]\n")
     arqOutput.write(imprimirTerminal)
-def heRETI(pc4):
-    if pc4 == "0x0000003C":
-        pc4 = "0x00000024"
-        return pc4
-    elif pc4 == "0x0000015C":
-        pc4 = "0x00000180"
-        return pc4
-    else:
-        return pc4
-        
+
 
 for codigoHexa in arqInput:
     aux = bin(int(codigoHexa,16)).strip("\n")
@@ -195,6 +186,7 @@ num1,num2,proxPC,ultimaLinha,registradorL4,variavel,en,t,ativaTerminal,ativaFPU,
 X,Y=0,0
 iN,expoente1,expoente2 = 0,0,0
 contaTerminal = 0
+desvioAnterior = 0
 regisEsp = ["r0","r1","r2","r3","r4","r5","r6","r7","r8","r9","r10","r11","r12","r13","r14",
 "r15","r16","r17","r18","r19","r20","r21","r22","r23","r24","r25","cr","ipc","ir","pc","sp","sr"]
 
@@ -222,7 +214,7 @@ except ValueError:
     INDEX0x8080888C = 0
 try:
     INDEX0x8888888B = mem.index("0x8888888B")
-except:
+except ValueError:
     INDEX0x8888888B = 0
 
 
@@ -683,7 +675,7 @@ while True:
                         divisaoResto = listaRegisDEC[L4]
                         ativaSWI = 1
                         pc4 = tX(completaZeroHexa(hex(proxPC+4)).upper())
-                        pc4 = heRETI(pc4)
+                        
                         mem[sp] = pc4
                         sp = sp - 4
                         mem[sp] = listaRegistradores[26]
@@ -1352,7 +1344,7 @@ while True:
                 if imed[0] == "1":
                     variavel = int(complementa2(imed),2) * -1
                 pulo = completaZeroHexa(hex(((variavel*4)+proxPC)+4))
-                
+                desvioAnterior = 1
                 imprimir = f"	{instrucao} {variavel}                   	PC={tX(completaZeroHexa(hex(int(pulo,16))).upper())}"
                 arqOutput.write(pc+":"+imprimir+"\n")
 
@@ -1439,7 +1431,7 @@ while True:
                     pulo = completaZeroHexa(hex((proxPC)+(variavel<<2)))
                 else:
                     pulo = completaZeroHexa(hex(proxPC))
-                
+                desvioAnterior = 1
                 imprimir = f"	{instrucao} {variavel}                    	PC={tX(completaZeroHexa(hex(int(pulo,16))).upper())}"
                 arqOutput.write(pc+":"+imprimir+"\n")
             
@@ -1630,7 +1622,7 @@ while True:
                 imediato = int(imed,2)
                 if imediato != 0:
                     pc4 = tX(completaZeroHexa(hex(proxPC+4)).upper())
-                    pc4 = heRETI(pc4)
+                    
                     mem[sp] = pc4
                     sp = sp - 4
                     mem[sp] = listaRegistradores[26]
@@ -1968,7 +1960,7 @@ while True:
                     divHex = "0x00000000"
                     ativaSWI = 1
                     pc4 = tX(completaZeroHexa(hex(proxPC+4)).upper())
-                    pc4 = heRETI(pc4)
+                    
                     mem[sp] = pc4
                     sp = sp - 4
                     mem[sp] = listaRegistradores[26]
@@ -2433,7 +2425,7 @@ while True:
         else:
             sr[29] = "1"
             pc4 = tX(completaZeroHexa(hex(proxPC+4)).upper())
-            pc4 = heRETI(pc4)
+            
             mem[sp] = pc4
             sp = sp - 4
             mem[sp] = listaRegistradores[26]
@@ -2447,15 +2439,15 @@ while True:
             proxIns = binario[1]
             arqOutput.write(f"[INVALID INSTRUCTION @ {pc}]\n[SOFTWARE INTERRUPTION]\n")
             
-    
 
     #--------Rotina WatchDog--------#
     if en == "1":
         counter = counter - 1
         if (counter <= -1) and (sr[30] == "1"):
-
-            pc4 = tX(completaZeroHexa(hex(proxPC+4)).upper())
-            pc4 = heRETI(pc4)
+            if desvioAnterior == 1:
+                pc4 = pulo
+            else:
+                pc4 = tX(completaZeroHexa(hex(proxPC+4)).upper())
             mem[sp] = pc4
             sp = sp - 4
             mem[sp] = listaRegistradores[26]
@@ -2477,8 +2469,11 @@ while True:
     if ativaHWI2 != 0:
         contaCicloVAR = contaCicloVAR + 1
         if contaCicloVAR == cicloVAR:
-            pc4ISR = tX(completaZeroHexa(hex(proxPC+4)).upper())
-            pc4ISR = heRETI(pc4ISR)
+            if desvioAnterior == 1:
+                pc4ISR = pulo
+            else:
+                pc4ISR= tX(completaZeroHexa(hex(proxPC+4)).upper())
+            
             mem[sp] = pc4ISR
             sp = sp - 4
             mem[sp] =  listaRegistradores[26]
@@ -2500,8 +2495,10 @@ while True:
     elif ativaHWI3 != 0:
         contaCicloVAR = contaCicloVAR + 1
         if contaCicloVAR == cicloVAR:
-            pc4ISR = tX(completaZeroHexa(hex(proxPC+4)).upper())
-            pc4ISR = heRETI(pc4ISR)
+            if desvioAnterior == 1:
+                pc4ISR = pulo
+            else:
+                pc4ISR= tX(completaZeroHexa(hex(proxPC+4)).upper())
             mem[sp] = pc4ISR
             sp = sp - 4
             mem[sp] =  listaRegistradores[26]
@@ -2521,8 +2518,10 @@ while True:
             ativaFPU = 0
 
     elif cicloCONS != 0:
-        pc4ISR = tX(completaZeroHexa(hex(int(pulo,16))).upper())
-        pc4ISR = heRETI(pc4ISR)
+        if desvioAnterior == 1:
+            pc4ISR = pulo
+        else:
+            pc4ISR= tX(completaZeroHexa(hex(proxPC+4)).upper())
         mem[sp] = pc4ISR
         sp = sp - 4
         mem[sp] =  listaRegistradores[26]
@@ -2581,7 +2580,6 @@ while True:
             try:
                 z = float(X / Y)
                 valoresFPU[2] = tX(floatHEX(z).upper())
-                
                 st = "0"
                 opFPU = "00000"
                 ativaHWI3 = 1
@@ -2674,6 +2672,7 @@ while True:
         proxIns = binario[(proxPC//4)]
 
     variavel = 0
+    desvioAnterior = 0
 
 if ativaTerminal == 1:
     terminalIMPRESSAO()
