@@ -2066,12 +2066,11 @@ while True:
                 i = int(imed,2)
                 if (tX(hex((listaRegisDEC[rX] + i)).upper()) == "0x8080888C"):
                     end = "0x8080888C"
-                    valor = completaZeroHexa8(valoresFPU)
+                    valor = completaZeroHexa8(valoresFPU[3])
                     listaRegistradores[rZ] = valor
                 
                 elif (tX(hex((listaRegisDEC[rX] + i)).upper()) == "0x8888888B"): 
                     end = "0x8888888B"
-                    
                     r+=1
                     contaTerminal += 1
                     if contaTerminal == 4:
@@ -2155,10 +2154,11 @@ while True:
                     valor = valoresFPU[2]
                 elif (tX((hex((listaRegisDEC[rX] + i)<<2)).upper()) == "0x8080888C"):
                     end = "0x8080888C"
-                    if pc == "0x00000148" and help1 == 1:
+                    if pc == "0x00000148" and help1 != 0:
                         listaRegistradores[rZ] = "0x00000020"
                         listaRegisDEC[rZ] = int("0x00000020",16)
                         valor  = "0x00000020"
+                        valoresFPU[3] = "0x00000020"
                         help1 = 0
                     else:
                         listaRegistradores[rZ] = valoresFPU[3]
@@ -2198,7 +2198,7 @@ while True:
                 i = int(imed,2)
                 if  tX(hex((listaRegisDEC[rX] + i)).upper()) == "0x8888888B":
                     end = "0x8888888B"
-                    parteiN = valor
+                    parteiN = listaRegistradores[rZ]
                     terminal[t] = listaRegistradores[rZ]
                     t += 1
                 
@@ -2228,7 +2228,7 @@ while True:
                             (mem[(listaRegisDEC[rX] + i)//4]) = listaRegistradores[rZ]
                     valor = "0x" + (listaRegistradores[rZ])[8:]
                     end = tX((completaZeroHexa(hex(listaRegisDEC[rX] + i))).upper())          
-                imprimir = f"	{instrucao} [{registradorX}+{i}],{registradorZ}             	MEM[{end}]={registradorZ.upper()}={valor}"
+                imprimir = f"	{instrucao} [{registradorX}+{i}],{registradorZ}             	MEM[{end}]={registradorZ.upper()}={listaRegistradores[rZ]}"
                 arqOutput.write(pc+":"+imprimir+"\n")
                 
             
