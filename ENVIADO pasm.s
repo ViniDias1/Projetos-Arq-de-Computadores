@@ -70,17 +70,6 @@
         mov r4, 0
         bun -24
         ret
-        
-    //imprimirBBSORT:
-    	//mov r20,0
-        //cmpi r20, 400 
-        //beq 5 
-        //l8 r10, [r8]  
-        //s8 [r1], r10      
-        //addi r8, r8, 1
-        //addi r20,r20,1
-        //bun -7     
-        //ret
    
 	// Função principal
 	main:
@@ -92,7 +81,6 @@
         
         //leitura do IN para o TERMINAL
         call lerIN
-        //ordena o vetor
         mov r10,10
         call toString
         call bbSort
@@ -104,4 +92,4 @@
     terminal:
     	.4byte 0x8888888B
     vetor:
-    	.fill 400	
+    	.fill 400
